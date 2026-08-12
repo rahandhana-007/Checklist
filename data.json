@@ -1,0 +1,2034 @@
+[
+  {
+    "id": "TP00021267",
+    "cgId": "SC00021213-1",
+    "colName": "Agus Taman Sinaga",
+    "password": "050764-Tna1",
+    "shName": "Tukimin II",
+    "ha": 0.02
+  },
+  {
+    "id": "SW00021327",
+    "cgId": "SC00021213-1",
+    "colName": "Agus Taman Sinaga",
+    "password": "270469-Sb1",
+    "shName": "Sapon Sri Suwandi",
+    "ha": 0.012
+  },
+  {
+    "id": "FT00021241",
+    "cgId": "SC00021213-1",
+    "colName": "Agus Taman Sinaga",
+    "password": "091166-Ra1",
+    "shName": "Ribut Damanik",
+    "ha": 0.023
+  },
+  {
+    "id": "ZD00023220",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "1234567-At1",
+    "shName": "Adi Santoso",
+    "ha": 0.133
+  },
+  {
+    "id": "HW00023248",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "260672-D1",
+    "shName": "Ahmadi",
+    "ha": 0.146
+  },
+  {
+    "id": "FW00023352",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "010757-B1",
+    "shName": "Alijan",
+    "ha": 0.123
+  },
+  {
+    "id": "KD00025188",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "150890-Ae1",
+    "shName": "Amad",
+    "ha": 0.129
+  },
+  {
+    "id": "CN00023413",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "Amibuddin-12341",
+    "shName": "Aminuddin Damanik",
+    "ha": 0.063
+  },
+  {
+    "id": "PH00023269",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "123456-C1",
+    "shName": "Bambang Harianto",
+    "ha": 0.01
+  },
+  {
+    "id": "TZ00023392",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "12345-BT1",
+    "shName": "Bambang Sulistyo",
+    "ha": 0.028
+  },
+  {
+    "id": "NU00023258",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "12345-BT1",
+    "shName": "Betty Sri Riana br Sihombing",
+    "ha": 0.081
+  },
+  {
+    "id": "CH00023223",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "Budiman-12341",
+    "shName": "Budiman",
+    "ha": 0.013
+  },
+  {
+    "id": "UA00023218",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "120285-B1",
+    "shName": "Deddy Syahputra",
+    "ha": 0.078
+  },
+  {
+    "id": "XU00023381",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "12345-EI1",
+    "shName": "Edwin",
+    "ha": 0.041
+  },
+  {
+    "id": "XX00023410",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "Elisa-12341",
+    "shName": "Elisa Mariska Simanjuntak",
+    "ha": 0.1
+  },
+  {
+    "id": "ZW00025187",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "11104-PK1",
+    "shName": "Fajar Kurniawan",
+    "ha": 0.058
+  },
+  {
+    "id": "TW00023168",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "240871-B1",
+    "shName": "Hadi Suwito",
+    "ha": 0.078
+  },
+  {
+    "id": "UJ00023380",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "230970-I1",
+    "shName": "Halomoan Sinaga",
+    "ha": 0.081
+  },
+  {
+    "id": "LJ00023189",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "020753-Ri1",
+    "shName": "Ir H Adi Suryazain",
+    "ha": 0.249
+  },
+  {
+    "id": "UV00023237",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "070586-Ma1",
+    "shName": "Ita Kumala Sari",
+    "ha": 0.11
+  },
+  {
+    "id": "KK00023160",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "240284-Mk1",
+    "shName": "Juharianto",
+    "ha": 0.172
+  },
+  {
+    "id": "DZ00023109",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "010771-Mj1",
+    "shName": "JUMANI",
+    "ha": 0.021
+  },
+  {
+    "id": "XY00023211",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "Jumiati-3211",
+    "shName": "Jumiati",
+    "ha": 0.136
+  },
+  {
+    "id": "MW00023221",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "1234567-Mj1",
+    "shName": "Junaida",
+    "ha": 0.11
+  },
+  {
+    "id": "JK00023226",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "110968-Km1",
+    "shName": "Kamsiati",
+    "ha": 0.066
+  },
+  {
+    "id": "WP00023210",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "1234567-Km1",
+    "shName": "Katijo",
+    "ha": 0.094
+  },
+  {
+    "id": "OM00023365",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "101164-Lm1",
+    "shName": "Legiran",
+    "ha": 0.034
+  },
+  {
+    "id": "FZ00023243",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "011171-Mm1",
+    "shName": "M Khairul",
+    "ha": 0.031
+  },
+  {
+    "id": "CI00023389",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "010892-N1",
+    "shName": "Manda",
+    "ha": 0.232
+  },
+  {
+    "id": "YI00025215",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "11104-PR1",
+    "shName": "Masiem",
+    "ha": 0.118
+  },
+  {
+    "id": "XV00023190",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "100788-Nm1",
+    "shName": "Mhd Norvan Edwin",
+    "ha": 0.011
+  },
+  {
+    "id": "AV00025743",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "301265-Mm1",
+    "shName": "miyem",
+    "ha": 0.067
+  },
+  {
+    "id": "YJ00023340",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "161152-PP1",
+    "shName": "Ngatimin",
+    "ha": 0.061
+  },
+  {
+    "id": "VC00023247",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "090759-P1",
+    "shName": "Nuraimah Saragih",
+    "ha": 0.09
+  },
+  {
+    "id": "OL00023373",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "060467-P1",
+    "shName": "Nurhayati",
+    "ha": 0.043
+  },
+  {
+    "id": "QL00023246",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "021264-Q1",
+    "shName": "Paidi",
+    "ha": 0.105
+  },
+  {
+    "id": "LA00023119",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "010773-S1",
+    "shName": "RAMINO",
+    "ha": 0.061
+  },
+  {
+    "id": "LI00023375",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "12345-RK1",
+    "shName": "Repi Handoko",
+    "ha": 0.106
+  },
+  {
+    "id": "IJ00025200",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "030279-Rh1",
+    "shName": "Rusmi Gultom",
+    "ha": 0.128
+  },
+  {
+    "id": "GP00023343",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "200658-T1",
+    "shName": "Salisan",
+    "ha": 0.136
+  },
+  {
+    "id": "BO00023087",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "050565-T1",
+    "shName": "SAMIDI",
+    "ha": 0.038
+  },
+  {
+    "id": "SH00023341",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "220196-T1",
+    "shName": "Sri Rahmayani",
+    "ha": 0.163
+  },
+  {
+    "id": "RM00023104",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "12345-SP1",
+    "shName": "SUGITO",
+    "ha": 0.037
+  },
+  {
+    "id": "TE00023222",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "120389-Sm1",
+    "shName": "Sukati",
+    "ha": 0.097
+  },
+  {
+    "id": "KW00023096",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "090469-T1",
+    "shName": "SUPARDI",
+    "ha": 0.099
+  },
+  {
+    "id": "SB00023215",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "1234567-Sv1",
+    "shName": "Supriadi",
+    "ha": 0.083
+  },
+  {
+    "id": "EV00023249",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "Supriana-1241",
+    "shName": "Supriana",
+    "ha": 0.049
+  },
+  {
+    "id": "PE00023085",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "280270-B1",
+    "shName": "Suratno",
+    "ha": 0.072
+  },
+  {
+    "id": "OG00023130",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "010764-B1",
+    "shName": "SURYONO",
+    "ha": 0.025
+  },
+  {
+    "id": "WO00023059",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "12345-SP1",
+    "shName": "SUTRIONO",
+    "ha": 0.095
+  },
+  {
+    "id": "JS00023214",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "170954-U1",
+    "shName": "Suwito",
+    "ha": 0.109
+  },
+  {
+    "id": "FK00023219",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "010758-T1",
+    "shName": "Suyono",
+    "ha": 0.098
+  },
+  {
+    "id": "NM00023108",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "260265-B1",
+    "shName": "SYAIFUL AMRI",
+    "ha": 0.152
+  },
+  {
+    "id": "LP00023038",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "070992-U1",
+    "shName": "TARMIJI",
+    "ha": 0.155
+  },
+  {
+    "id": "MJ00023254",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "197010-O1",
+    "shName": "Tukiman",
+    "ha": 0.026
+  },
+  {
+    "id": "CT00025197",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "251279-Wo1",
+    "shName": "Wagiman",
+    "ha": 0.084
+  },
+  {
+    "id": "WG00023230",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "Waldi-1241",
+    "shName": "Waldi",
+    "ha": 0.076
+  },
+  {
+    "id": "IY00025208",
+    "cgId": "WJ00023005-1",
+    "colName": "Dedi Hartono",
+    "password": "11104-PQ1",
+    "shName": "Wargino",
+    "ha": 0.035
+  },
+  {
+    "id": "QD00025013",
+    "cgId": "XO00024914-1",
+    "colName": "Erdinson Purba",
+    "password": "Cahaya-26",
+    "shName": "Nurcahaya Sinaga",
+    "ha": 0.089
+  },
+  {
+    "id": "EX00020775",
+    "cgId": "MI00018030-1",
+    "colName": "Hermanto",
+    "password": "123456-AS1",
+    "shName": "Abdul Haris",
+    "ha": 0.157
+  },
+  {
+    "id": "TV00020797",
+    "cgId": "MI00018030-1",
+    "colName": "Hermanto",
+    "password": "123456-Eo1",
+    "shName": "edy Nasution",
+    "ha": 0.08
+  },
+  {
+    "id": "EA00021183",
+    "cgId": "MI00018030-1",
+    "colName": "Hermanto",
+    "password": "123456-Hrt1",
+    "shName": "Hermanto",
+    "ha": 1.0
+  },
+  {
+    "id": "TW00020994",
+    "cgId": "MI00018030-1",
+    "colName": "Hermanto",
+    "password": "12345-Jio1",
+    "shName": "Jumali",
+    "ha": 0.052
+  },
+  {
+    "id": "KO00021158",
+    "cgId": "MI00018030-1",
+    "colName": "Hermanto",
+    "password": "1234567-Jui1",
+    "shName": "JUMANTO",
+    "ha": 0.259
+  },
+  {
+    "id": "JP00023535",
+    "cgId": "MI00018030-1",
+    "colName": "Hermanto",
+    "password": "12345-KT1",
+    "shName": "Koko Syaputra",
+    "ha": 0.023
+  },
+  {
+    "id": "EW00020682",
+    "cgId": "MI00018030-7",
+    "colName": "Hermanto",
+    "password": "1234567-Lh1",
+    "shName": "Legimin",
+    "ha": 0.142
+  },
+  {
+    "id": "WA00021083",
+    "cgId": "MI00018030-1",
+    "colName": "Hermanto",
+    "password": "171070-Mb1",
+    "shName": "Misdianto",
+    "ha": 0.199
+  },
+  {
+    "id": "BB00020968",
+    "cgId": "MI00018030-1",
+    "colName": "Hermanto",
+    "password": "123456-Mo1",
+    "shName": "miskun",
+    "ha": 0.201
+  },
+  {
+    "id": "KZ00020782",
+    "cgId": "MI00018030-1",
+    "colName": "Hermanto",
+    "password": "300697-A1",
+    "shName": "Muhammad zahri",
+    "ha": 0.045
+  },
+  {
+    "id": "UB00021092",
+    "cgId": "MI00018030-1",
+    "colName": "Hermanto",
+    "password": "301179-Mb1",
+    "shName": "muliadi",
+    "ha": 0.105
+  },
+  {
+    "id": "VF00023695",
+    "cgId": "MI00018030-1",
+    "colName": "Hermanto",
+    "password": "120602-Nb1",
+    "shName": "Nanang pramana",
+    "ha": 0.184
+  },
+  {
+    "id": "FI00020920",
+    "cgId": "MI00018030-1",
+    "colName": "Hermanto",
+    "password": "123456-Nj1",
+    "shName": "Nur efendi",
+    "ha": 0.133
+  },
+  {
+    "id": "KD00021168",
+    "cgId": "MI00018030-1",
+    "colName": "Hermanto",
+    "password": "Sahnin-1241",
+    "shName": "sahnim",
+    "ha": 0.067
+  },
+  {
+    "id": "PA00020702",
+    "cgId": "MI00018030-1",
+    "colName": "Hermanto",
+    "password": "060865-Ss1",
+    "shName": "SARINAH",
+    "ha": 0.072
+  },
+  {
+    "id": "WK00021101",
+    "cgId": "MI00018030-1",
+    "colName": "Hermanto",
+    "password": "Imiyati-2341",
+    "shName": "Sri imiyati",
+    "ha": 0.084
+  },
+  {
+    "id": "SZ00020754",
+    "cgId": "MI00018030-1",
+    "colName": "Hermanto",
+    "password": "210482-T1",
+    "shName": "subeki",
+    "ha": 0.113
+  },
+  {
+    "id": "LI00020670",
+    "cgId": "MI00018030-1",
+    "colName": "Hermanto",
+    "password": "112233-Bc1",
+    "shName": "SUDARION",
+    "ha": 0.156
+  },
+  {
+    "id": "LJ00020922",
+    "cgId": "MI00018030-1",
+    "colName": "Hermanto",
+    "password": "We25sNhR",
+    "shName": "sumarni",
+    "ha": 0.04
+  },
+  {
+    "id": "AS00020981",
+    "cgId": "MI00018030-1",
+    "colName": "Hermanto",
+    "password": "091174-Sq1",
+    "shName": "SUPIATNO",
+    "ha": 0.064
+  },
+  {
+    "id": "CS00020957",
+    "cgId": "MI00018030-1",
+    "colName": "Hermanto",
+    "password": "070883-T1",
+    "shName": "suriono",
+    "ha": 0.131
+  },
+  {
+    "id": "CZ00018445",
+    "cgId": "MI00018030-1",
+    "colName": "Hermanto",
+    "password": "290379-T1",
+    "shName": "suyam",
+    "ha": 0.039
+  },
+  {
+    "id": "AW00020669",
+    "cgId": "MI00018030-1",
+    "colName": "Hermanto",
+    "password": "12345-Sb1",
+    "shName": "Syamsul Bahri marpaung",
+    "ha": 0.034
+  },
+  {
+    "id": "BI00020738",
+    "cgId": "MI00018030-1",
+    "colName": "Hermanto",
+    "password": "010765-Tl1",
+    "shName": "Tukini",
+    "ha": 0.034
+  },
+  {
+    "id": "LS00023184",
+    "cgId": "OH00023169-1",
+    "colName": "Indra Sakti Nainggolan",
+    "password": "Pittauli-25",
+    "shName": "Pittauli Purba",
+    "ha": 0.015
+  },
+  {
+    "id": "OE00023180",
+    "cgId": "OH00023169-1",
+    "colName": "Indra Sakti Nainggolan",
+    "password": "Krisman-25",
+    "shName": "Ramson Malau",
+    "ha": 0.07
+  },
+  {
+    "id": "YZ00023181",
+    "cgId": "OH00023169-1",
+    "colName": "Indra Sakti Nainggolan",
+    "password": "190165-F",
+    "shName": "Esdiamin Purba",
+    "ha": 0.035
+  },
+  {
+    "id": "SO00021758",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "12345-AT1",
+    "shName": "Aliper Sinaga",
+    "ha": 0.284
+  },
+  {
+    "id": "MD00021609",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "180881-Bm1",
+    "shName": "Anhar Lubis",
+    "ha": 0.388
+  },
+  {
+    "id": "SI00021617",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "011089-Cc1",
+    "shName": "Apriyadi Manurung",
+    "ha": 0.051
+  },
+  {
+    "id": "GV00021733",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "041064-Cn1",
+    "shName": "Badu Manurung",
+    "ha": 0.044
+  },
+  {
+    "id": "UK00021737",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "011166-Ct1",
+    "shName": "Benar Samosir",
+    "ha": 0.03
+  },
+  {
+    "id": "PT00021825",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "311255-Cn1",
+    "shName": "Berliana Manik",
+    "ha": 0.075
+  },
+  {
+    "id": "TM00021802",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "091075-Ct1",
+    "shName": "Brusli",
+    "ha": 0.23
+  },
+  {
+    "id": "IZ00021800",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "140689-E1",
+    "shName": "Deni Pramadi",
+    "ha": 0.349
+  },
+  {
+    "id": "AK00024204",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "12345-ET1",
+    "shName": "Desriati Sinaga",
+    "ha": 0.019
+  },
+  {
+    "id": "ZA00021632",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "081087-Et1",
+    "shName": "Devi Santi Hutabarat",
+    "ha": 0.308
+  },
+  {
+    "id": "ME00021751",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "1234567-Eb1",
+    "shName": "Dewi Asih",
+    "ha": 0.184
+  },
+  {
+    "id": "QM00021763",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "300377-Ft1",
+    "shName": "Ellin Sinaga",
+    "ha": 0.134
+  },
+  {
+    "id": "BY00021726",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "230378-Ft1",
+    "shName": "Else Simangunsong",
+    "ha": 0.047
+  },
+  {
+    "id": "QD00021750",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "220603-Gc1",
+    "shName": "Gihon Sipayung",
+    "ha": 0.061
+  },
+  {
+    "id": "SD00021781",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "050960-I1",
+    "shName": "Haryadi",
+    "ha": 0.221
+  },
+  {
+    "id": "KF00021627",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "12345-HO1",
+    "shName": "Hasanuddin Nainggolan",
+    "ha": 0.02
+  },
+  {
+    "id": "HF00021788",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "200880-I1",
+    "shName": "Herawaty Panjaitan",
+    "ha": 0.15
+  },
+  {
+    "id": "ZK00022011",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "12345-JT1",
+    "shName": "Jesna Silalahi",
+    "ha": 0.135
+  },
+  {
+    "id": "OP00021596",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "230391-Kb1",
+    "shName": "Kardo Elikis",
+    "ha": 0.488
+  },
+  {
+    "id": "LD00021614",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "810205-Hb1",
+    "shName": "Lamhot Sirait",
+    "ha": 0.2
+  },
+  {
+    "id": "VI00022001",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "12345-LT1",
+    "shName": "Leonardus Silalahi",
+    "ha": 0.159
+  },
+  {
+    "id": "TQ00021810",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "040677-Ac1",
+    "shName": "Lisken Simanungkalit",
+    "ha": 0.127
+  },
+  {
+    "id": "LE00021593",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "100874-C1",
+    "shName": "Lisnawati Purba",
+    "ha": 0.043
+  },
+  {
+    "id": "ZX00021768",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "1234567-Mt1",
+    "shName": "Mangatas Sirait",
+    "ha": 0.163
+  },
+  {
+    "id": "TI00021884",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "200973-Mn1",
+    "shName": "Mangatur Manurung",
+    "ha": 0.004
+  },
+  {
+    "id": "LB00021977",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "171282-T1",
+    "shName": "Mansen Saragih",
+    "ha": 0.164
+  },
+  {
+    "id": "ZE00021793",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "290665-Mt1",
+    "shName": "Merliana Sirait",
+    "ha": 0.025
+  },
+  {
+    "id": "YY00021822",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "Misiyati-1241",
+    "shName": "Misiati",
+    "ha": 0.126
+  },
+  {
+    "id": "RD00021756",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "101166-N1",
+    "shName": "Murah",
+    "ha": 0.129
+  },
+  {
+    "id": "CU00021809",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "080185-O1",
+    "shName": "Nelvi Lusivera Waty",
+    "ha": 0.172
+  },
+  {
+    "id": "AV00021796",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "Nurhayadi-1241",
+    "shName": "Nurhayadi",
+    "ha": 0.171
+  },
+  {
+    "id": "OL00021637",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "180274-Nt1",
+    "shName": "Nurmala Sinaga",
+    "ha": 0.068
+  },
+  {
+    "id": "NI00021595",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "010765-P1",
+    "shName": "Osbiner Nainggolan",
+    "ha": 0.047
+  },
+  {
+    "id": "VE00021757",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "240882-Q1",
+    "shName": "Pariaman Manurung",
+    "ha": 0.108
+  },
+  {
+    "id": "ZU00021634",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "191231-D1",
+    "shName": "Poniati",
+    "ha": 0.019
+  },
+  {
+    "id": "QX00021636",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "240473-Prk1",
+    "shName": "Purwadi",
+    "ha": 0.342
+  },
+  {
+    "id": "HC00021954",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "081190-Pe1",
+    "shName": "Putri Dewi Butar Butar",
+    "ha": 0.092
+  },
+  {
+    "id": "SJ00021752",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "1234567-Rx1",
+    "shName": "Randi Wansa",
+    "ha": 0.414
+  },
+  {
+    "id": "IO00021605",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "521175-S1",
+    "shName": "Renti Saragih",
+    "ha": 0.141
+  },
+  {
+    "id": "DF00021823",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "110794-Rn1",
+    "shName": "Rodo Manik",
+    "ha": 0.235
+  },
+  {
+    "id": "NT00021771",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "151273-Rt1",
+    "shName": "Roni Damanik",
+    "ha": 0.099
+  },
+  {
+    "id": "DC00021808",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "195017-I1",
+    "shName": "Rudi Hartono",
+    "ha": 0.123
+  },
+  {
+    "id": "AW00021787",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "311258-T1",
+    "shName": "Sagimin",
+    "ha": 0.053
+  },
+  {
+    "id": "FX00021817",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "Samiadi-1241",
+    "shName": "Samidi",
+    "ha": 0.24
+  },
+  {
+    "id": "VV00021819",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "190410-M1",
+    "shName": "Satinem",
+    "ha": 0.413
+  },
+  {
+    "id": "PJ00021799",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "010760-S1",
+    "shName": "Sawiyun",
+    "ha": 0.124
+  },
+  {
+    "id": "WQ00024203",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "311279-T1",
+    "shName": "Subroto",
+    "ha": 0.071
+  },
+  {
+    "id": "VZ00021765",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "1234567-Tv1",
+    "shName": "Sukanti",
+    "ha": 0.331
+  },
+  {
+    "id": "GS00024211",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "12345-NF1",
+    "shName": "Sumestro",
+    "ha": 0.092
+  },
+  {
+    "id": "NP00024208",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "12345-QP1",
+    "shName": "Suriadi",
+    "ha": 0.241
+  },
+  {
+    "id": "XR00021786",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "100778-C1",
+    "shName": "Sutiono",
+    "ha": 0.237
+  },
+  {
+    "id": "WC00021811",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "290471-P1",
+    "shName": "Suyono",
+    "ha": 0.186
+  },
+  {
+    "id": "OX00021578",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "270766-T1",
+    "shName": "Syawal Hasibuan",
+    "ha": 0.705
+  },
+  {
+    "id": "CW00021754",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "311260-U1",
+    "shName": "Tarmonah",
+    "ha": 0.097
+  },
+  {
+    "id": "OF00021604",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "200568-U1",
+    "shName": "Togar Nainggolan",
+    "ha": 0.172
+  },
+  {
+    "id": "SE00021576",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "020169-B1",
+    "shName": "Umar Amrulsyah",
+    "ha": 0.56
+  },
+  {
+    "id": "GI00021764",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "12345-VT1",
+    "shName": "Usman Silalahi",
+    "ha": 0.107
+  },
+  {
+    "id": "IS00021797",
+    "cgId": "PI00021560-1",
+    "colName": "Jesica Sipayung",
+    "password": "010755-X1",
+    "shName": "Wati",
+    "ha": 0.098
+  },
+  {
+    "id": "BA00022271",
+    "cgId": "II00022127-1",
+    "colName": "Jon Perlin Sidabutar",
+    "password": "101167-Fgg",
+    "shName": "FERDINAN GULTOM",
+    "ha": 0.033
+  },
+  {
+    "id": "EP00022152",
+    "cgId": "II00022127-1",
+    "colName": "Jon Perlin Sidabutar",
+    "password": "060376-Lbb",
+    "shName": "Ludovicius butar butar",
+    "ha": 1.237
+  },
+  {
+    "id": "HT00022281",
+    "cgId": "II00022127-1",
+    "colName": "Jon Perlin Sidabutar",
+    "password": "051083-Ts",
+    "shName": "sundur tua siahaan",
+    "ha": 0.037
+  },
+  {
+    "id": "IR00022804",
+    "cgId": "II00022127-1",
+    "colName": "Jon Perlin Sidabutar",
+    "password": "221479-Ut",
+    "shName": "Togar sijabat",
+    "ha": 0.04
+  },
+  {
+    "id": "ND00022242",
+    "cgId": "II00022127-1",
+    "colName": "Jon Perlin Sidabutar",
+    "password": "080180-Kk",
+    "shName": "Jimmi sinaga",
+    "ha": 0.058
+  },
+  {
+    "id": "RD00022170",
+    "cgId": "II00022127-1",
+    "colName": "Jon Perlin Sidabutar",
+    "password": "120759-Ts",
+    "shName": "salmon sianipar2",
+    "ha": 0.071
+  },
+  {
+    "id": "RZ00022208",
+    "cgId": "II00022127-1",
+    "colName": "Jon Perlin Sidabutar",
+    "password": "040470-Laa",
+    "shName": "lusman ambarita",
+    "ha": 0.212
+  },
+  {
+    "id": "VP00022316",
+    "cgId": "II00022127-1",
+    "colName": "Jon Perlin Sidabutar",
+    "password": "130781-Xw",
+    "shName": "Wilden sidabutar",
+    "ha": 0.135
+  },
+  {
+    "id": "BK00023485",
+    "cgId": "QV00023460-1",
+    "colName": "Juardi",
+    "password": "230363-B1",
+    "shName": "Abdul rahman",
+    "ha": 0.101
+  },
+  {
+    "id": "RC00023509",
+    "cgId": "QV00023460-1",
+    "colName": "Juardi",
+    "password": "123456-B1",
+    "shName": "alimsyah",
+    "ha": 0.152
+  },
+  {
+    "id": "ND00023518",
+    "cgId": "QV00023460-1",
+    "colName": "Juardi",
+    "password": "Anwar-1241",
+    "shName": "Anwar w",
+    "ha": 0.167
+  },
+  {
+    "id": "YU00023492",
+    "cgId": "QV00023460-1",
+    "colName": "Juardi",
+    "password": "311278-S1",
+    "shName": "boiran",
+    "ha": 0.064
+  },
+  {
+    "id": "SS00023486",
+    "cgId": "QV00023460-1",
+    "colName": "Juardi",
+    "password": "170857-D1",
+    "shName": "caswan",
+    "ha": 0.102
+  },
+  {
+    "id": "MN00023503",
+    "cgId": "QV00023460-1",
+    "colName": "Juardi",
+    "password": "1234567-Hb1",
+    "shName": "hasanuddin",
+    "ha": 0.166
+  },
+  {
+    "id": "LA00023482",
+    "cgId": "QV00023460-1",
+    "colName": "Juardi",
+    "password": "130352-T1",
+    "shName": "Iwan sukriya",
+    "ha": 0.045
+  },
+  {
+    "id": "RL00023488",
+    "cgId": "QV00023460-1",
+    "colName": "Juardi",
+    "password": "050882-K1",
+    "shName": "juminan",
+    "ha": 0.124
+  },
+  {
+    "id": "OL00023532",
+    "cgId": "QV00023460-1",
+    "colName": "Juardi",
+    "password": "310196-K1",
+    "shName": "junaidi",
+    "ha": 0.011
+  },
+  {
+    "id": "NB00023480",
+    "cgId": "QV00023460-1",
+    "colName": "Juardi",
+    "password": "011265-O1",
+    "shName": "nasir",
+    "ha": 0.062
+  },
+  {
+    "id": "WV00024884",
+    "cgId": "QV00023460-1",
+    "colName": "Juardi",
+    "password": "1234567-O1",
+    "shName": "nurdin",
+    "ha": 0.142
+  },
+  {
+    "id": "XT00023487",
+    "cgId": "QV00023460-1",
+    "colName": "Juardi",
+    "password": "010568-V1",
+    "shName": "paino",
+    "ha": 0.028
+  },
+  {
+    "id": "TK00023493",
+    "cgId": "QV00023460-1",
+    "colName": "Juardi",
+    "password": "1234567-Pb1",
+    "shName": "partuk",
+    "ha": 0.108
+  },
+  {
+    "id": "XN00023479",
+    "cgId": "QV00023460-1",
+    "colName": "Juardi",
+    "password": "061065-Q1",
+    "shName": "Poniman s",
+    "ha": 0.084
+  },
+  {
+    "id": "PP00023506",
+    "cgId": "QV00023460-1",
+    "colName": "Juardi",
+    "password": "100769-Q1",
+    "shName": "ponimin",
+    "ha": 0.051
+  },
+  {
+    "id": "LR00023491",
+    "cgId": "QV00023460-1",
+    "colName": "Juardi",
+    "password": "030471-Q1",
+    "shName": "ponirin",
+    "ha": 0.029
+  },
+  {
+    "id": "TM00023477",
+    "cgId": "QV00023460-1",
+    "colName": "Juardi",
+    "password": "040461-S1",
+    "shName": "reben",
+    "ha": 0.039
+  },
+  {
+    "id": "LU00023475",
+    "cgId": "QV00023460-1",
+    "colName": "Juardi",
+    "password": "123456-S1",
+    "shName": "ruslan",
+    "ha": 0.045
+  },
+  {
+    "id": "NN00023500",
+    "cgId": "QV00023460-1",
+    "colName": "Juardi",
+    "password": "030375-X1",
+    "shName": "sangkut",
+    "ha": 0.127
+  },
+  {
+    "id": "QQ00023559",
+    "cgId": "QV00023460-1",
+    "colName": "Juardi",
+    "password": "030965-SD1",
+    "shName": "saripon",
+    "ha": 0.035
+  },
+  {
+    "id": "UO00023581",
+    "cgId": "QV00023460-1",
+    "colName": "Juardi",
+    "password": "180576-V1",
+    "shName": "sirojal munir",
+    "ha": 0.129
+  },
+  {
+    "id": "RD00023522",
+    "cgId": "QV00023460-1",
+    "colName": "Juardi",
+    "password": "230590-E1",
+    "shName": "supadi",
+    "ha": 0.019
+  },
+  {
+    "id": "LI00023472",
+    "cgId": "QV00023460-1",
+    "colName": "Juardi",
+    "password": "Syaipul-1241",
+    "shName": "syaipul rahman",
+    "ha": 0.045
+  },
+  {
+    "id": "UO00023471",
+    "cgId": "QV00023460-1",
+    "colName": "Juardi",
+    "password": "1234567-Wb1",
+    "shName": "wasiwan",
+    "ha": 0.059
+  },
+  {
+    "id": "WK00023473",
+    "cgId": "QV00023460-1",
+    "colName": "Juardi",
+    "password": "Yogi-1241",
+    "shName": "yogi",
+    "ha": 0.036
+  },
+  {
+    "id": "JC00022130",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "ajeng2025",
+    "shName": "AJENG SISMALA DEWI",
+    "ha": 0.167
+  },
+  {
+    "id": "OJ00026867",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "110703-B",
+    "shName": "Anna Fauziah Pane",
+    "ha": 0.049
+  },
+  {
+    "id": "AC00026071",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "260871-B1",
+    "shName": "ANTONI",
+    "ha": 0.023
+  },
+  {
+    "id": "PL00026314",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "250392-B1",
+    "shName": "Arif Suseno",
+    "ha": 0.02
+  },
+  {
+    "id": "JJ00022259",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "041004-B1",
+    "shName": "Arjuna Ahrunnaza",
+    "ha": 0.094
+  },
+  {
+    "id": "VK00022260",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "030387-B1",
+    "shName": "Chairul Amri",
+    "ha": 0.065
+  },
+  {
+    "id": "MT00026167",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "010762-B1",
+    "shName": "Derno",
+    "ha": 0.013
+  },
+  {
+    "id": "QT00026246",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "110980-B1",
+    "shName": "Edy Suhendra",
+    "ha": 0.127
+  },
+  {
+    "id": "UV00026256",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "010756-B1",
+    "shName": "Efendi",
+    "ha": 0.044
+  },
+  {
+    "id": "IE00022122",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "131275-Epa1",
+    "shName": "Erwinson P Damanik",
+    "ha": 0.351
+  },
+  {
+    "id": "HP00026073",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "210465-B1",
+    "shName": "HADI AMIN",
+    "ha": 0.068
+  },
+  {
+    "id": "WM00025925",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "123456-I",
+    "shName": "Hendri Siagian",
+    "ha": 0.041
+  },
+  {
+    "id": "MG00022134",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "12345-Jb1",
+    "shName": "JOAKIM TAMBAH",
+    "ha": 0.1
+  },
+  {
+    "id": "SA00025928",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "140666-Jb1",
+    "shName": "Jumadi",
+    "ha": 0.003
+  },
+  {
+    "id": "QI00026191",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "291153-Ab1",
+    "shName": "Junaidi",
+    "ha": 0.058
+  },
+  {
+    "id": "QK00022352",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "120288-Ab1",
+    "shName": "KOKO JOYO PURBA",
+    "ha": 0.042
+  },
+  {
+    "id": "FK00026495",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "091186-B",
+    "shName": "Ludin Simarmata",
+    "ha": 0.028
+  },
+  {
+    "id": "JI00026060",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "12345-Mb",
+    "shName": "Mangatas Sinaga",
+    "ha": 0.013
+  },
+  {
+    "id": "YJ00026233",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "110980-Ab1",
+    "shName": "Mariman Sinaga",
+    "ha": 0.075
+  },
+  {
+    "id": "LY00022126",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "091066-N1",
+    "shName": "MESKEM PANJAITAN",
+    "ha": 0.025
+  },
+  {
+    "id": "EI00026206",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "200779-B1",
+    "shName": "MISRIADI",
+    "ha": 0.046
+  },
+  {
+    "id": "DC00022194",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "123456-Mt1",
+    "shName": "Muhammad Ari Saputra",
+    "ha": 0.02
+  },
+  {
+    "id": "BM00025903",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "021254-N",
+    "shName": "Ngatemen",
+    "ha": 0.045
+  },
+  {
+    "id": "QV00025910",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "231062-B1",
+    "shName": "Nursaida Sitorus",
+    "ha": 0.235
+  },
+  {
+    "id": "GL00026034",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "090368-B1",
+    "shName": "Pariman",
+    "ha": 0.112
+  },
+  {
+    "id": "BZ00025901",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "020572-Q1",
+    "shName": "Parto",
+    "ha": 0.081
+  },
+  {
+    "id": "YL00026070",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "200974-B",
+    "shName": "PONIDI",
+    "ha": 0.096
+  },
+  {
+    "id": "JR00026171",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "010755-B",
+    "shName": "Ramli",
+    "ha": 0.008
+  },
+  {
+    "id": "BX00022144",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "280370-Mp123",
+    "shName": "RASTONI PURBA",
+    "ha": 0.218
+  },
+  {
+    "id": "TR00022296",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "200896-Mr1",
+    "shName": "RESTU PRANANDARI",
+    "ha": 0.086
+  },
+  {
+    "id": "DT00025902",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "010762-Mr1",
+    "shName": "Riadi",
+    "ha": 0.04
+  },
+  {
+    "id": "PR00025912",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "250583-St",
+    "shName": "Sahata Saragih",
+    "ha": 0.037
+  },
+  {
+    "id": "DD00026035",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "040569-Ma1",
+    "shName": "Saono Sinaga",
+    "ha": 0.12
+  },
+  {
+    "id": "WX00026317",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "010760-Ma",
+    "shName": "SARDI",
+    "ha": 0.04
+  },
+  {
+    "id": "VQ00026313",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "010759-Mp1",
+    "shName": "Sikin",
+    "ha": 0.016
+  },
+  {
+    "id": "IT00026053",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "100975-Mk1",
+    "shName": "Siti Halijah",
+    "ha": 0.086
+  },
+  {
+    "id": "RE00022129",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "210880-T1",
+    "shName": "SOLI SINAGA",
+    "ha": 0.078
+  },
+  {
+    "id": "FZ00026086",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "300475-Ma1",
+    "shName": "SUCIPTO",
+    "ha": 0.037
+  },
+  {
+    "id": "FN00022214",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "100981-B1",
+    "shName": "Sucita Dewi",
+    "ha": 0.189
+  },
+  {
+    "id": "MM00026076",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "220385-B1",
+    "shName": "SUGITO",
+    "ha": 0.011
+  },
+  {
+    "id": "YV00026394",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "190357-T1",
+    "shName": "Sunarman",
+    "ha": 0.016
+  },
+  {
+    "id": "HT00022261",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "080186-B1",
+    "shName": "Supardi",
+    "ha": 0.277
+  },
+  {
+    "id": "TL00022184",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "230986-T1",
+    "shName": "SUROTO",
+    "ha": 0.179
+  },
+  {
+    "id": "PL00026036",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "010763-U1",
+    "shName": "Tonot",
+    "ha": 0.018
+  },
+  {
+    "id": "JN00022135",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "123456-Tt1",
+    "shName": "TUJI SINAGA",
+    "ha": 0.048
+  },
+  {
+    "id": "FF00022181",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "251268-U1",
+    "shName": "TUKIRAN",
+    "ha": 0.047
+  },
+  {
+    "id": "EI00022196",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "123456-Tv1",
+    "shName": "Tukirin",
+    "ha": 0.128
+  },
+  {
+    "id": "IV00026865",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "120677-B1",
+    "shName": "Wagiardi",
+    "ha": 0.033
+  },
+  {
+    "id": "OS00026190",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "050593-B1",
+    "shName": "Wahyudi",
+    "ha": 0.025
+  },
+  {
+    "id": "UH00026312",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "231157-B1",
+    "shName": "Yastam",
+    "ha": 0.013
+  },
+  {
+    "id": "ZB00022123",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "250774-Z",
+    "shName": "Yuswardy",
+    "ha": 0.112
+  },
+  {
+    "id": "BU00022191",
+    "cgId": "LG00022093-1",
+    "colName": "Mulianto",
+    "password": "311257-ZA1",
+    "shName": "Zulham",
+    "ha": 0.004
+  },
+  {
+    "id": "ED00023804",
+    "cgId": "LC00023789-1",
+    "colName": "nurni malasari",
+    "password": "260883-Ts",
+    "shName": "suheri anwar",
+    "ha": 0.787
+  },
+  {
+    "id": "NK00023817",
+    "cgId": "LC00023789-1",
+    "colName": "nurni malasari",
+    "password": "020886-Ba",
+    "shName": "agus priono",
+    "ha": 0.111
+  },
+  {
+    "id": "OH00023805",
+    "cgId": "LC00023789-1",
+    "colName": "nurni malasari",
+    "password": "101062-On",
+    "shName": "ngadi",
+    "ha": 0.034
+  },
+  {
+    "id": "TH00023797",
+    "cgId": "LC00023789-1",
+    "colName": "nurni malasari",
+    "password": "010767-Lk",
+    "shName": "karsono",
+    "ha": 0.229
+  },
+  {
+    "id": "VE00023816",
+    "cgId": "LC00023789-1",
+    "colName": "nurni malasari",
+    "password": "090401-Gf",
+    "shName": "Fahmi rianda lubis",
+    "ha": 0.017
+  },
+  {
+    "id": "VM00023799",
+    "cgId": "LC00023789-1",
+    "colName": "nurni malasari",
+    "password": "291291-Ih",
+    "shName": "hariadi",
+    "ha": 0.118
+  },
+  {
+    "id": "PG00021895",
+    "cgId": "FT00021851-1",
+    "colName": "Saurman Saragih",
+    "password": "010765-B1",
+    "shName": "Anipah",
+    "ha": 0.034
+  },
+  {
+    "id": "FE00021922",
+    "cgId": "FT00021851-1",
+    "colName": "Saurman Saragih",
+    "password": "120576-An1",
+    "shName": "Asmiruddin Manurung",
+    "ha": 0.026
+  },
+  {
+    "id": "GW00022067",
+    "cgId": "FT00021851-1",
+    "colName": "Saurman Saragih",
+    "password": "150890-C1",
+    "shName": "Burhan Harahap 2",
+    "ha": 0.025
+  },
+  {
+    "id": "UI00021874",
+    "cgId": "FT00021851-1",
+    "colName": "Saurman Saragih",
+    "password": "211272-K1",
+    "shName": "Jamaludin",
+    "ha": 0.013
+  },
+  {
+    "id": "VI00021901",
+    "cgId": "FT00021851-1",
+    "colName": "Saurman Saragih",
+    "password": "140447-N1",
+    "shName": "Marsudin",
+    "ha": 0.034
+  },
+  {
+    "id": "WO00021875",
+    "cgId": "FT00021851-1",
+    "colName": "Saurman Saragih",
+    "password": "010779-Sq1",
+    "shName": "Supri",
+    "ha": 0.032
+  },
+  {
+    "id": "AZ00022706",
+    "cgId": "ZE00022628-1",
+    "colName": "sucipto",
+    "password": "110576-Qp",
+    "shName": "pungut",
+    "ha": 0.047
+  },
+  {
+    "id": "DN00022666",
+    "cgId": "ZE00022628-1",
+    "colName": "sucipto",
+    "password": "130359-Sbb",
+    "shName": "sumarjo 2",
+    "ha": 0.079
+  },
+  {
+    "id": "KS00022644",
+    "cgId": "ZE00022628-1",
+    "colName": "sucipto",
+    "password": "201064-Wbb",
+    "shName": "wahono",
+    "ha": 0.03
+  },
+  {
+    "id": "VO00022692",
+    "cgId": "ZE00022628-1",
+    "colName": "sucipto",
+    "password": "311266-Nm",
+    "shName": "misnan",
+    "ha": 0.055
+  },
+  {
+    "id": "ZF00022652",
+    "cgId": "ZE00022628-1",
+    "colName": "sucipto",
+    "password": "050690-On",
+    "shName": "Nuriati",
+    "ha": 0.214
+  },
+  {
+    "id": "ZZ00022645",
+    "cgId": "ZE00022628-1",
+    "colName": "sucipto",
+    "password": "580701-Ba",
+    "shName": "ayu zusandi",
+    "ha": 0.03
+  },
+  {
+    "id": "WA00022651",
+    "cgId": "ZE00022628-1",
+    "colName": "sucipto",
+    "password": "140178-Cb",
+    "shName": "basuki",
+    "ha": 0.044
+  },
+  {
+    "id": "SC00022710",
+    "cgId": "ZE00022628-1",
+    "colName": "sucipto",
+    "password": "170682-Ts",
+    "shName": "sarwan",
+    "ha": 0.043
+  },
+  {
+    "id": "NA00022650",
+    "cgId": "ZE00022628-1",
+    "colName": "sucipto",
+    "password": "030883-Zbb",
+    "shName": "zulham efendi",
+    "ha": 0.066
+  },
+  {
+    "id": "HO00021558",
+    "cgId": "JQ00021537-1",
+    "colName": "Suroso",
+    "password": "051096-E1d",
+    "shName": "Dewi lestari",
+    "ha": 0.086
+  },
+  {
+    "id": "KM00021559",
+    "cgId": "JQ00021537-1",
+    "colName": "Suroso",
+    "password": "260688-Ts",
+    "shName": "suhendri wibowo",
+    "ha": 0.09
+  },
+  {
+    "id": "VP00021565",
+    "cgId": "JQ00021537-1",
+    "colName": "Suroso",
+    "password": "221093-Ss",
+    "shName": "Rusdi Sumantri",
+    "ha": 0.048
+  },
+  {
+    "id": "XQ00021554",
+    "cgId": "JQ00021537-1",
+    "colName": "Suroso",
+    "password": "112233-Ik",
+    "shName": "karmi",
+    "ha": 0.07
+  }
+]
