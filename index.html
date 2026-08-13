@@ -8,526 +8,219 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="./config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.8/dist/umd/supabase.js"></script>
   <style>
     :root {
-      --ink: #122017;
-      --ink-soft: #3d5244;
-      --muted: #6b7d70;
-      --line: #d9e0d4;
-      --paper: #f3efe4;
-      --card: #fffcf5;
-      --card-done: #eef5ea;
-      --forest: #14301f;
-      --forest-2: #1c432b;
-      --leaf: #2f7a45;
-      --lime: #c6e35a;
-      --amber: #e8a317;
-      --coral: #d4572a;
-      --sky: #2a6f7a;
-      --shadow: 0 10px 30px rgba(20, 48, 31, 0.08);
-      --radius: 18px;
-      --safe-b: env(safe-area-inset-bottom, 0px);
+      --ink: #1c241e;
+      --soft: #4a5a4e;
+      --muted: #7a877d;
+      --line: #e4e8df;
+      --bg: #eef1ea;
+      --card: #ffffff;
+      --forest: #1a3a26;
+      --leaf: #2d7a46;
+      --lime: #c5e05a;
+      --done: #f3f8f1;
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { min-height: 100%; }
     body {
       font-family: "Sora", "Segoe UI", sans-serif;
-      background:
-        radial-gradient(1200px 500px at 10% -10%, #dce8c8 0%, transparent 55%),
-        radial-gradient(900px 400px at 100% 0%, #e7d7b4 0%, transparent 50%),
-        var(--paper);
+      background: var(--bg);
       color: var(--ink);
-      line-height: 1.45;
+      line-height: 1.4;
     }
-
-    button, input, select { font-family: inherit; }
+    button, input, select, textarea { font-family: inherit; }
     button { cursor: pointer; border: 0; background: none; color: inherit; }
     .mono { font-family: "IBM Plex Mono", ui-monospace, monospace; }
 
-    .app {
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: 18px 16px 120px;
-    }
+    .app { max-width: 1360px; margin: 0 auto; padding: 20px 24px 72px; }
 
     header.top {
       background: var(--forest);
-      color: #f4f7ee;
-      border-radius: 28px;
-      padding: 22px 22px 18px;
-      box-shadow: 0 18px 40px rgba(20, 48, 31, 0.22);
-      position: relative;
-      overflow: hidden;
+      color: #f3f7ef;
+      border-radius: 16px;
+      padding: 16px 20px;
     }
-    header.top::after {
-      content: "";
-      position: absolute;
-      right: -40px;
-      top: -50px;
-      width: 220px;
-      height: 220px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(198, 227, 90, 0.28), transparent 70%);
-      pointer-events: none;
-    }
-    .brand {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      position: relative;
-      z-index: 1;
-    }
+    .brand { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .brand-left { display: flex; align-items: center; gap: 12px; }
     .logo-mark {
-      width: 44px;
-      height: 44px;
-      border-radius: 14px;
-      background: var(--lime);
-      color: var(--forest);
-      display: grid;
-      place-items: center;
-      font-weight: 700;
-      letter-spacing: -0.04em;
-      flex-shrink: 0;
+      width: 36px; height: 36px; border-radius: 10px;
+      background: var(--lime); color: var(--forest);
+      display: grid; place-items: center; font-weight: 700;
     }
-    .brand h1 {
-      font-size: 1.35rem;
-      letter-spacing: -0.03em;
-      font-weight: 700;
+    .brand h1 { font-size: 1.15rem; letter-spacing: -0.03em; }
+    .header-actions { display: flex; align-items: center; gap: 8px; }
+    .sync-pill {
+      height: 28px; padding: 0 10px; border-radius: 999px;
+      font-size: 0.72rem; font-weight: 700;
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,0.08); color: #d5e4cf;
     }
-    .brand p {
-      color: #c9d6c4;
-      font-size: 0.82rem;
-      margin-top: 2px;
-    }
-    .brand-left { display: flex; gap: 12px; align-items: center; }
-    .header-actions { display: flex; gap: 8px; }
-
+    .sync-pill .dot { width: 7px; height: 7px; border-radius: 50%; background: #8aa088; }
+    .sync-pill.ok .dot { background: var(--lime); }
+    .sync-pill.busy .dot { background: #f0c14a; }
+    .sync-pill.err .dot { background: #ff8a65; }
     .icon-btn {
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
-      background: rgba(255,255,255,0.08);
-      color: #e8f0e4;
-      display: grid;
-      place-items: center;
-      border: 1px solid rgba(255,255,255,0.08);
+      width: 36px; height: 36px; border-radius: 10px;
+      background: rgba(255,255,255,0.08); color: #e8f0e4;
+      display: grid; place-items: center;
     }
     .icon-btn:hover { background: rgba(255,255,255,0.14); }
 
     .stats {
       display: grid;
-      grid-template-columns: 1.4fr repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 10px;
-      margin-top: 18px;
-      position: relative;
-      z-index: 1;
+      margin-top: 14px;
     }
     .stat {
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 16px;
+      background: var(--card);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      border-radius: 12px;
       padding: 12px 14px;
     }
-    .stat .label {
-      font-size: 0.7rem;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: #a8bba8;
-    }
-    .stat .value {
-      font-size: 1.35rem;
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      margin-top: 2px;
-    }
-    .stat .sub { font-size: 0.75rem; color: #b7c6b4; margin-top: 2px; }
-    .progress-track {
-      height: 8px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 99px;
-      margin-top: 10px;
-      overflow: hidden;
-    }
-    .progress-fill {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, var(--lime), #8fd16a);
-      border-radius: 99px;
-      transition: width 0.4s ease;
-    }
+    .stat .label { font-size: 0.68rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+    .stat .value { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.03em; margin-top: 2px; }
+    .stat .sub { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+    .progress-track { height: 6px; background: #e7ebe3; border-radius: 99px; margin-top: 8px; overflow: hidden; }
+    .progress-fill { height: 100%; width: 0; background: var(--leaf); border-radius: 99px; }
 
     .toolbar {
-      position: sticky;
-      top: 8px;
-      z-index: 20;
-      margin-top: 16px;
-      background: rgba(243, 239, 228, 0.86);
-      backdrop-filter: blur(14px);
-      border: 1px solid rgba(20,48,31,0.08);
-      border-radius: 22px;
+      margin-top: 14px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
       padding: 12px;
-      box-shadow: var(--shadow);
-    }
-    .search-row { display: flex; gap: 8px; }
-    .search-wrap {
-      flex: 1;
-      position: relative;
-    }
-    .search-wrap svg {
-      position: absolute;
-      left: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--muted);
-    }
-    #search {
-      width: 100%;
-      height: 48px;
-      border: 1px solid var(--line);
-      background: var(--card);
-      border-radius: 14px;
-      padding: 0 40px 0 42px;
-      font-size: 0.95rem;
-      color: var(--ink);
-      outline: none;
-    }
-    #search:focus { border-color: var(--leaf); box-shadow: 0 0 0 3px rgba(47,122,69,0.15); }
-    .search-clear {
-      position: absolute;
-      right: 8px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 28px;
-      height: 28px;
-      border-radius: 8px;
-      color: var(--muted);
-      display: none;
-    }
-    .search-clear.show { display: grid; place-items: center; }
-
-    .filters {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 10px;
-      align-items: center;
-    }
-    .seg {
-      display: flex;
-      background: #e7ebdf;
-      border-radius: 12px;
-      padding: 3px;
-    }
-    .seg button {
-      height: 34px;
-      padding: 0 12px;
-      border-radius: 9px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--ink-soft);
-    }
-    .seg button.active {
-      background: var(--forest);
-      color: #f4f7ee;
-    }
-    select.filter-select {
-      height: 40px;
-      border-radius: 12px;
-      border: 1px solid var(--line);
-      background: var(--card);
-      padding: 0 12px;
-      font-size: 0.82rem;
-      color: var(--ink);
-      min-width: 180px;
-    }
-    .count-chip {
-      margin-left: auto;
-      font-size: 0.78rem;
-      color: var(--muted);
-      font-weight: 500;
-    }
-
-    .collector-scroll {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding: 10px 2px 2px;
-      scrollbar-width: none;
-    }
-    .collector-scroll::-webkit-scrollbar { display: none; }
-    .chip {
-      flex: 0 0 auto;
-      height: 34px;
-      padding: 0 12px;
-      border-radius: 99px;
-      border: 1px solid var(--line);
-      background: var(--card);
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: var(--ink-soft);
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-    }
-    .chip .dot {
-      width: 8px; height: 8px; border-radius: 50%;
-    }
-    .chip.active {
-      background: var(--forest);
-      color: #f4f7ee;
-      border-color: var(--forest);
-    }
-    .chip .n {
-      font-size: 0.68rem;
-      background: rgba(0,0,0,0.08);
-      padding: 1px 6px;
-      border-radius: 99px;
-    }
-    .chip.active .n { background: rgba(255,255,255,0.14); }
-
-    .list { margin-top: 14px; display: grid; gap: 10px; }
-
-    .card {
-      background: var(--card);
-      border: 1px solid rgba(20,48,31,0.07);
-      border-radius: var(--radius);
-      padding: 14px 14px 12px;
-      box-shadow: 0 6px 16px rgba(20,48,31,0.04);
-      transition: transform 0.15s ease, border-color 0.15s ease, background 0.2s ease;
-    }
-    .card:hover { transform: translateY(-1px); }
-    .card.done {
-      background: var(--card-done);
-      border-color: #c9ddc4;
-    }
-    .card.done .sh-name { text-decoration: line-through; color: var(--muted); }
-    .card-top {
-      display: grid;
-      grid-template-columns: 28px 1fr auto;
       gap: 10px;
-      align-items: start;
+      align-items: center;
     }
-    .check {
-      width: 26px;
-      height: 26px;
-      border-radius: 8px;
-      border: 2px solid #b7c4b4;
-      display: grid;
-      place-items: center;
-      margin-top: 2px;
-      transition: 0.15s ease;
-      background: #fff;
+    .search-wrap { position: relative; flex: 1; min-width: 220px; }
+    .search-wrap svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); }
+    #search {
+      width: 100%; height: 40px; border: 1px solid var(--line); background: #fafbf8;
+      border-radius: 10px; padding: 0 36px 0 38px; font-size: 0.9rem; outline: none;
     }
-    .card.done .check {
-      background: var(--leaf);
-      border-color: var(--leaf);
-      color: #fff;
+    #search:focus { border-color: var(--leaf); }
+    .search-clear { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); width: 24px; height: 24px; color: var(--muted); display: none; }
+    .search-clear.show { display: grid; place-items: center; }
+    .filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .seg { display: flex; background: #eef1ea; border-radius: 10px; padding: 3px; }
+    .seg button { height: 32px; padding: 0 12px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; color: var(--soft); }
+    .seg button.active { background: var(--forest); color: #fff; }
+    select.filter-select {
+      height: 38px; border-radius: 10px; border: 1px solid var(--line);
+      background: #fff; padding: 0 10px; font-size: 0.82rem; color: var(--ink);
     }
-    .sh-name {
-      font-weight: 650;
-      font-size: 1rem;
-      letter-spacing: -0.02em;
+    .count-chip { font-size: 0.78rem; color: var(--muted); font-weight: 500; }
+
+    .table-wrap {
+      margin-top: 12px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: auto;
     }
-    .meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px 10px;
-      margin-top: 4px;
-      color: var(--muted);
-      font-size: 0.78rem;
-    }
-    .meta b { color: var(--ink-soft); font-weight: 600; }
-    .ha-pill {
-      background: #eef5d4;
-      color: #355016;
-      font-weight: 700;
-      font-size: 0.78rem;
-      padding: 6px 9px;
-      border-radius: 999px;
+    .sh-table { width: 100%; border-collapse: collapse; min-width: 1080px; }
+    .sh-table th {
+      position: sticky; top: 0; z-index: 2;
+      text-align: left; font-size: 0.68rem; letter-spacing: .05em; text-transform: uppercase;
+      color: var(--muted); background: #f6f8f3; padding: 10px 12px; border-bottom: 1px solid var(--line);
       white-space: nowrap;
     }
-    .card.done .ha-pill { background: #dcead6; color: #3d6246; }
-    .col-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 10px;
+    .sh-table td {
+      padding: 10px 12px; border-bottom: 1px solid #eef1ea; vertical-align: middle;
+      font-size: 0.86rem; background: #fff;
     }
+    .sh-table tr.card:hover td { background: #f7faf4; }
+    .sh-table tr.card.done td { background: var(--done); }
+    .sh-table tr.card.done:hover td { background: #eaf3e6; }
+    .sh-table tr.card.done .sh-name { color: var(--muted); text-decoration: line-through; }
+    .sh-name { font-weight: 650; }
+    .meta { margin-top: 2px; color: var(--muted); font-size: 0.74rem; }
+    .ha-pill {
+      display: inline-block; background: #eef5d8; color: #3a5618;
+      font-weight: 700; font-size: 0.75rem; padding: 4px 8px; border-radius: 999px; white-space: nowrap;
+    }
+    .col-cell { display: flex; align-items: center; gap: 8px; }
     .avatar {
       width: 22px; height: 22px; border-radius: 50%;
-      display: grid; place-items: center;
-      font-size: 0.62rem; font-weight: 700; color: #fff;
+      display: grid; place-items: center; font-size: 0.62rem; font-weight: 700; color: #fff; flex-shrink: 0;
     }
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 12px;
+    .check {
+      width: 22px; height: 22px; border-radius: 6px; border: 2px solid #c5cec3;
+      display: grid; place-items: center; background: #fff; font-size: 12px;
     }
+    tr.card.done .check { background: var(--leaf); border-color: var(--leaf); color: #fff; }
+    .actions { display: flex; flex-wrap: nowrap; gap: 6px; }
     .btn {
-      height: 34px;
-      padding: 0 10px;
-      border-radius: 10px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      border: 1px solid var(--line);
-      background: #fff;
-      color: var(--ink-soft);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
+      height: 30px; padding: 0 8px; border-radius: 8px; font-size: 0.72rem; font-weight: 600;
+      border: 1px solid var(--line); background: #fff; color: var(--soft); white-space: nowrap;
     }
-    .btn:hover { border-color: #b7c6b3; background: #f7faf3; }
-    .btn.primary {
-      background: var(--forest);
-      color: #f4f7ee;
-      border-color: var(--forest);
+    .btn:hover { background: #f4f7f0; }
+    .btn.primary { background: var(--forest); color: #fff; border-color: var(--forest); }
+    .btn.ghost-done { background: #e7f3e4; color: var(--leaf); border-color: #c9ddc4; }
+    .file-chip {
+      display: inline-flex; align-items: center; height: 24px; padding: 0 8px;
+      border-radius: 6px; font-size: 0.7rem; font-weight: 700; text-decoration: none;
+      background: #e7f0d8; color: #355016; border: 1px solid #d0ddb4;
     }
-    .btn.ghost-done {
-      background: #e7f3e4;
-      color: var(--leaf);
-      border-color: #c9ddc4;
-    }
-    .pass-box {
-      display: none;
-      margin-top: 10px;
-      background: #f4f1e6;
-      border-radius: 12px;
-      padding: 10px 12px;
-      font-size: 0.8rem;
-    }
-    .card.open .pass-box { display: block; }
-    .kv { display: grid; grid-template-columns: 92px 1fr auto; gap: 6px; align-items: center; padding: 4px 0; }
+    .file-chip.miss { background: #f4f4f0; color: var(--muted); border-color: var(--line); }
+    .files { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+
+    .detail-row { display: none; }
+    tr.card.open + .detail-row { display: table-row; }
+    .detail-row td { background: #f7f5ee; padding: 12px 16px 14px; }
+    .kv { display: grid; grid-template-columns: 90px 1fr auto; gap: 8px; align-items: center; padding: 4px 0; font-size: 0.82rem; }
     .kv span { color: var(--muted); }
-    .kv b { font-weight: 600; word-break: break-all; }
-    .note-input {
-      width: 100%;
-      margin-top: 8px;
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      padding: 8px 10px;
-      font-size: 0.8rem;
-      background: #fff;
-      outline: none;
-    }
-    .stamp {
-      display: none;
-      font-size: 0.65rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      color: var(--leaf);
-      border: 1.5px solid var(--leaf);
-      padding: 2px 6px;
-      border-radius: 6px;
-      transform: rotate(-6deg);
-    }
-    .card.done .stamp { display: inline-block; }
+    .note-input { width: 100%; margin-top: 8px; border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; font-size: 0.82rem; }
+    .thumbs { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+    .thumb { position: relative; width: 64px; height: 64px; border-radius: 8px; overflow: hidden; border: 1px solid var(--line); }
+    .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .thumb .x { position: absolute; top: 3px; right: 3px; width: 18px; height: 18px; border-radius: 5px; background: rgba(0,0,0,.65); color: #fff; font-size: 12px; }
 
-    .empty {
-      text-align: center;
-      padding: 48px 16px;
-      color: var(--muted);
-    }
-    .empty h3 { color: var(--ink); margin-bottom: 6px; }
-
+    .empty { text-align: center; padding: 40px 16px; color: var(--muted); }
     .toast {
-      position: fixed;
-      left: 50%;
-      bottom: calc(22px + var(--safe-b));
-      transform: translateX(-50%) translateY(20px);
-      background: var(--forest);
-      color: #f4f7ee;
-      padding: 10px 14px;
-      border-radius: 12px;
-      font-size: 0.85rem;
-      opacity: 0;
-      pointer-events: none;
-      transition: 0.25s ease;
-      z-index: 50;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%) translateY(16px);
+      background: var(--forest); color: #fff; padding: 10px 14px; border-radius: 10px;
+      font-size: 0.85rem; opacity: 0; pointer-events: none; transition: .2s ease; z-index: 50;
+      display: flex; align-items: center; gap: 10px;
     }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
     .toast button { color: var(--lime); font-weight: 700; }
-
-    dialog.modal {
-      border: 0;
-      border-radius: 20px;
-      padding: 0;
-      width: min(520px, calc(100vw - 24px));
-      box-shadow: 0 24px 60px rgba(0,0,0,0.25);
-    }
-    dialog.modal::backdrop { background: rgba(18, 32, 22, 0.45); }
+    dialog.modal { border: 0; border-radius: 16px; padding: 0; width: min(560px, calc(100vw - 24px)); }
+    dialog.modal::backdrop { background: rgba(18,32,22,.45); }
     .modal-body { padding: 22px; }
-    .modal-body h2 { font-size: 1.15rem; margin-bottom: 8px; }
-    .modal-body p, .modal-body li { color: var(--ink-soft); font-size: 0.9rem; }
+    .modal-body h2 { font-size: 1.1rem; margin-bottom: 8px; }
+    .modal-body p, .modal-body li { color: var(--soft); font-size: 0.9rem; }
     .modal-body ul { padding-left: 18px; margin: 10px 0 14px; display: grid; gap: 6px; }
-    .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px; }
-
-    .col-panel {
-      margin-top: 16px;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 10px;
-    }
-    .col-card {
-      background: var(--card);
-      border: 1px solid rgba(20,48,31,0.07);
-      border-radius: 16px;
-      padding: 12px 14px;
-    }
-    .col-card .row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-    .bar {
-      height: 6px;
-      background: #e7ebdf;
-      border-radius: 99px;
-      margin-top: 8px;
-      overflow: hidden;
-    }
-    .bar > i {
-      display: block;
-      height: 100%;
-      background: var(--leaf);
-      width: 0;
-    }
-
-    .fab-row {
-      position: fixed;
-      right: 16px;
-      bottom: calc(16px + var(--safe-b));
-      display: flex;
-      gap: 8px;
-      z-index: 30;
-    }
+    .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px; flex-wrap: wrap; }
+    .sql-box { width: 100%; min-height: 150px; border-radius: 10px; padding: 10px; font-size: 0.72rem; background: #122017; color: #d7ecc4; }
+    .field { display: grid; gap: 6px; margin-bottom: 10px; }
+    .field label { font-size: 0.78rem; font-weight: 600; color: var(--soft); }
+    .field input { height: 40px; border: 1px solid var(--line); border-radius: 10px; padding: 0 12px; }
+    .hint { background: #eef5d4; color: #355016; border-radius: 10px; padding: 10px 12px; font-size: 0.8rem; margin: 10px 0; }
+    .errbox { background: #fde8e4; color: #8a2b16; border-radius: 10px; padding: 10px 12px; font-size: 0.8rem; margin: 10px 0; display: none; }
+    .errbox.show { display: block; }
+    .fab-row { position: fixed; right: 20px; bottom: 20px; z-index: 30; }
     .fab {
-      height: 46px;
-      padding: 0 16px;
-      border-radius: 999px;
-      background: var(--forest);
-      color: #f4f7ee;
-      font-weight: 700;
-      font-size: 0.85rem;
-      box-shadow: 0 12px 24px rgba(20,48,31,0.28);
-      display: none;
-      align-items: center;
-      gap: 8px;
+      height: 42px; padding: 0 14px; border-radius: 999px; background: var(--forest); color: #fff;
+      font-weight: 700; font-size: 0.82rem; display: none; align-items: center;
     }
     .fab.show { display: inline-flex; }
+    #picPreview { width: 100%; border-radius: 12px; max-height: 70vh; object-fit: contain; background: #122017; }
+    .stamp { display: none; }
+    tr.card.done .stamp { display: inline-block; margin-left: 6px; font-size: 0.62rem; font-weight: 700; color: var(--leaf); border: 1px solid var(--leaf); padding: 1px 5px; border-radius: 4px; }
 
     @media (max-width: 820px) {
+      .app { padding: 12px 10px 90px; }
       .stats { grid-template-columns: 1fr 1fr; }
-      .count-chip { width: 100%; margin-left: 0; }
-      .brand h1 { font-size: 1.15rem; }
-    }
-    @media (max-width: 560px) {
-      .app { padding: 10px 10px 130px; }
-      header.top { border-radius: 22px; padding: 16px; }
-      .stat .value { font-size: 1.15rem; }
-      select.filter-select { min-width: 0; flex: 1; }
+      .brand h1 { font-size: 1.05rem; }
+      .sync-pill .txt { display: none; }
     }
   </style>
 </head>
@@ -542,6 +235,12 @@
           </div>
         </div>
         <div class="header-actions">
+          <button class="sync-pill" id="syncPill" title="Status cloud">
+            <span class="dot"></span><span class="txt" id="syncText">Cloud</span>
+          </button>
+          <button class="icon-btn" id="btnCloud" title="Supabase">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 11a5 5 0 0 1 1-9 6 6 0 0 1 11 2 4 4 0 0 1 0 8H5"/><path d="M8 13v4M11 13v4M14 13v4"/></svg>
+          </button>
           <button class="icon-btn" id="btnExport" title="Unduh progres">
             <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 3v9M5 8l4 4 4-4M4 14h10"/></svg>
           </button>
@@ -575,15 +274,11 @@
       </div>
     </header>
 
-    <section class="col-panel" id="colPanel"></section>
-
     <div class="toolbar">
-      <div class="search-row">
-        <div class="search-wrap">
-          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="8" cy="8" r="5.5"/><path d="M12.2 12.2 16 16"/></svg>
-          <input id="search" type="search" placeholder="Cari SH ID…" autocomplete="off" inputmode="search" />
-          <button class="search-clear" id="clearSearch" aria-label="Hapus pencarian">✕</button>
-        </div>
+      <div class="search-wrap">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="8" cy="8" r="5.5"/><path d="M12.2 12.2 16 16"/></svg>
+        <input id="search" type="search" placeholder="Cari SH ID…" autocomplete="off" inputmode="search" />
+        <button class="search-clear" id="clearSearch" aria-label="Hapus pencarian">✕</button>
       </div>
       <div class="filters">
         <div class="seg" id="statusSeg">
@@ -591,18 +286,35 @@
           <button data-status="pending">Belum</button>
           <button data-status="done">Selesai</button>
         </div>
+        <select class="filter-select" id="colFilter"></select>
         <select class="filter-select" id="sortBy">
-          <option value="name">Urut nama A–Z</option>
-          <option value="ha">Urut HA terbesar</option>
-          <option value="collector">Urut collector</option>
+          <option value="name">Nama A–Z</option>
+          <option value="ha">HA terbesar</option>
+          <option value="collector">Collector</option>
           <option value="pending">Belum dulu</option>
         </select>
         <span class="count-chip" id="resultCount">254 data</span>
       </div>
-      <div class="collector-scroll" id="collectorChips"></div>
     </div>
+    <div id="colPanel" hidden></div>
+    <div id="collectorChips" hidden></div>
 
-    <section class="list" id="list"></section>
+    <div class="table-wrap">
+      <table class="sh-table">
+        <thead>
+          <tr>
+            <th style="width:42px"></th>
+            <th>Pekebun</th>
+            <th>SH ID</th>
+            <th>Collector</th>
+            <th>HA</th>
+            <th>File</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="list"></tbody>
+      </table>
+    </div>
     <div class="empty" id="empty" hidden>
       <h3>Tidak ada data</h3>
       <p>Ubah kata kunci atau filter status.</p>
@@ -613,17 +325,27 @@
     <button class="fab" id="fabDoneVisible">Tandai yang terlihat</button>
   </div>
   <div class="toast" id="toast"></div>
+  <input type="file" id="inputGeo" accept=".geojson,.json,application/json,application/geo+json" hidden />
+  <input type="file" id="inputPic" accept="image/jpeg,image/png,.jpg,.jpeg,.png" hidden />
+
+  <dialog class="modal" id="picModal">
+    <div class="modal-body">
+      <img id="picPreview" alt="Foto SH" />
+      <div class="modal-actions">
+        <a class="btn" id="picOpen" target="_blank" rel="noopener">Buka tab baru</a>
+        <button class="btn primary" id="picClose">Tutup</button>
+      </div>
+    </div>
+  </dialog>
 
   <dialog class="modal" id="helpModal">
     <div class="modal-body">
       <h2>Cara pakai EUDR Issue</h2>
       <ul>
         <li>Ketuk kotak centang untuk menandai pekebun sudah selesai.</li>
-        <li>Gunakan kotak cari hanya dengan SH ID, misalnya TP00021267.</li>
-        <li>Salin ID / password sekali ketuk, lalu tempel di sistem login.</li>
-        <li>Filter collector lewat chip di bawah pencarian.</li>
-        <li>Progres tersimpan otomatis di perangkat ini.</li>
-        <li>Unduh CSV progres dari ikon unduh di pojok kanan atas.</li>
+        <li>Pencarian hanya memakai SH ID.</li>
+        <li>Salin ID / password sekali ketuk.</li>
+        <li>Progres disimpan ke Supabase, jadi tetap ada di Vercel dan perangkat lain.</li>
       </ul>
       <div class="modal-actions">
         <button class="btn" id="btnReset">Reset semua progres</button>
@@ -632,18 +354,101 @@
     </div>
   </dialog>
 
-  <script>
-    const STORE_KEY = "sh-tuntas-v1";
-    const PALETTE = ["#2f7a45","#d4572a","#2a6f7a","#8a5a2b","#5b4b8a","#b45309","#0f766e","#9f1239","#3f6212","#1d4ed8","#7c3aed","#0e7490","#b45309"];
+  <dialog class="modal" id="cloudModal">
+    <div class="modal-body">
+      <h2>Hubungkan Supabase</h2>
+      <p>Agar centang, GeoJSON, dan foto tersimpan di cloud, jalankan SQL sekali di SQL Editor, lalu tes koneksi.</p>
+      <div class="hint">
+        Buka Supabase → SQL Editor → New query → tempel SQL di bawah → Run.
+        SQL ini membuat tabel progres, tabel file, dan bucket Storage. Lalu klik <b>Tes koneksi</b>.
+      </div>
+      <div class="field">
+        <label>Project URL</label>
+        <input id="sbUrl" class="mono" spellcheck="false" />
+      </div>
+      <div class="field">
+        <label>Publishable / anon key</label>
+        <input id="sbKey" class="mono" spellcheck="false" />
+      </div>
+      <textarea id="sqlBox" class="sql-box mono" readonly></textarea>
+      <div class="errbox" id="cloudErr"></div>
+      <div class="modal-actions">
+        <button class="btn" id="btnCopySql">Salin SQL</button>
+        <button class="btn" id="btnCloseCloud">Tutup</button>
+        <button class="btn primary" id="btnTestCloud">Tes koneksi</button>
+      </div>
+    </div>
+  </dialog>
 
+  <script>
+    const STORE_KEY = "eudr-issue-v1";
+    const CFG_KEY = "eudr-supabase-config";
+    const PALETTE = ["#2f7a45","#d4572a","#2a6f7a","#8a5a2b","#5b4b8a","#b45309","#0f766e","#9f1239","#3f6212","#1d4ed8","#7c3aed","#0e7490","#b45309"];
+    const SETUP_SQL = `create table if not exists public.eudr_progress (
+  sh_id text primary key,
+  done boolean not null default false,
+  note text not null default '',
+  done_at timestamptz,
+  updated_at timestamptz not null default now()
+);
+alter table public.eudr_progress add column if not exists ha_after numeric;
+alter table public.eudr_progress enable row level security;
+drop policy if exists "eudr_select" on public.eudr_progress;
+drop policy if exists "eudr_insert" on public.eudr_progress;
+drop policy if exists "eudr_update" on public.eudr_progress;
+drop policy if exists "eudr_delete" on public.eudr_progress;
+create policy "eudr_select" on public.eudr_progress for select to anon, authenticated using (true);
+create policy "eudr_insert" on public.eudr_progress for insert to anon, authenticated with check (true);
+create policy "eudr_update" on public.eudr_progress for update to anon, authenticated using (true) with check (true);
+create policy "eudr_delete" on public.eudr_progress for delete to anon, authenticated using (true);
+
+create table if not exists public.eudr_files (
+  id uuid primary key default gen_random_uuid(),
+  sh_id text not null,
+  kind text not null check (kind in ('geojson', 'photo')),
+  path text not null unique,
+  name text not null,
+  size_bytes bigint,
+  created_at timestamptz not null default now()
+);
+create index if not exists eudr_files_sh_id_idx on public.eudr_files (sh_id);
+alter table public.eudr_files enable row level security;
+drop policy if exists "eudr_files_select" on public.eudr_files;
+drop policy if exists "eudr_files_insert" on public.eudr_files;
+drop policy if exists "eudr_files_update" on public.eudr_files;
+drop policy if exists "eudr_files_delete" on public.eudr_files;
+create policy "eudr_files_select" on public.eudr_files for select to anon, authenticated using (true);
+create policy "eudr_files_insert" on public.eudr_files for insert to anon, authenticated with check (true);
+create policy "eudr_files_update" on public.eudr_files for update to anon, authenticated using (true) with check (true);
+create policy "eudr_files_delete" on public.eudr_files for delete to anon, authenticated using (true);
+
+insert into storage.buckets (id, name, public, file_size_limit)
+values ('eudr-files', 'eudr-files', true, 15728640)
+on conflict (id) do update set public = excluded.public, file_size_limit = excluded.file_size_limit;
+drop policy if exists "eudr_obj_select" on storage.objects;
+drop policy if exists "eudr_obj_insert" on storage.objects;
+drop policy if exists "eudr_obj_update" on storage.objects;
+drop policy if exists "eudr_obj_delete" on storage.objects;
+create policy "eudr_obj_select" on storage.objects for select to anon, authenticated using (bucket_id = 'eudr-files');
+create policy "eudr_obj_insert" on storage.objects for insert to anon, authenticated with check (bucket_id = 'eudr-files');
+create policy "eudr_obj_update" on storage.objects for update to anon, authenticated using (bucket_id = 'eudr-files') with check (bucket_id = 'eudr-files');
+create policy "eudr_obj_delete" on storage.objects for delete to anon, authenticated using (bucket_id = 'eudr-files');`;
+
+    const BUCKET = "eudr-files";
     const state = {
       rows: [],
       progress: {},
+      files: {},
+      openIds: new Set(),
+      pendingUpload: null,
       query: "",
       status: "all",
       collector: "all",
       sort: "name",
-      lastUndo: null
+      lastUndo: null,
+      client: null,
+      cloud: "off",
+      applyingRemote: false
     };
 
     const $ = (id) => document.getElementById(id);
@@ -651,12 +456,31 @@
       "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
     }[c]));
 
+    function getConfig() {
+      const baked = window.EUDR_SUPABASE || {};
+      let local = {};
+      try { local = JSON.parse(localStorage.getItem(CFG_KEY) || "{}"); } catch {}
+      return {
+        url: (local.url || baked.url || "").trim(),
+        anonKey: (local.anonKey || baked.anonKey || "").trim()
+      };
+    }
+    function saveConfig(cfg) {
+      localStorage.setItem(CFG_KEY, JSON.stringify(cfg));
+    }
     function loadProgress() {
       try { return JSON.parse(localStorage.getItem(STORE_KEY) || "{}"); }
       catch { return {}; }
     }
-    function saveProgress() {
+    function cacheProgress() {
       localStorage.setItem(STORE_KEY, JSON.stringify(state.progress));
+    }
+
+    function setSync(kind, text) {
+      state.cloud = kind;
+      const el = $("syncPill");
+      el.className = "sync-pill " + (kind === "ok" ? "ok" : kind === "busy" ? "busy" : kind === "err" ? "err" : "");
+      $("syncText").textContent = text;
     }
 
     function initials(name) {
@@ -670,8 +494,124 @@
     function fmtHa(n) {
       return Number(n).toLocaleString("id-ID", { minimumFractionDigits: 2, maximumFractionDigits: 3 });
     }
+    function readHaFromProps(props) {
+      if (!props || typeof props !== "object") return null;
+      const keys = Object.keys(props);
+      const prefer = ["ha","luas_ha","area_ha","hectare","hectares","luas","area","ha_after","ha_new"];
+      for (const p of prefer) {
+        const k = keys.find((x) => x.toLowerCase() === p);
+        if (!k) continue;
+        const n = Number(String(props[k]).replace(",", "."));
+        if (Number.isFinite(n) && n > 0) return n;
+      }
+      for (const k of keys) {
+        const lk = k.toLowerCase();
+        if (!/(ha|luas|hect)/.test(lk)) continue;
+        const n = Number(String(props[k]).replace(",", "."));
+        if (Number.isFinite(n) && n > 0 && n < 10000) return n;
+      }
+      return null;
+    }
+    function ringAreaM2(ring) {
+      const R = 6378137;
+      let area = 0;
+      for (let i = 0, n = ring.length - 1; i < n; i++) {
+        const [x1, y1] = ring[i];
+        const [x2, y2] = ring[i + 1];
+        area += (x2 - x1) * Math.PI / 180 * (2 + Math.sin(y1 * Math.PI / 180) + Math.sin(y2 * Math.PI / 180));
+      }
+      return Math.abs(area * R * R / 2);
+    }
+    function geomAreaM2(geom) {
+      if (!geom) return 0;
+      if (geom.type === "Polygon") {
+        const rings = geom.coordinates || [];
+        if (!rings.length) return 0;
+        return ringAreaM2(rings[0]) - rings.slice(1).reduce((s, r) => s + ringAreaM2(r), 0);
+      }
+      if (geom.type === "MultiPolygon") {
+        return (geom.coordinates || []).reduce((s, poly) => {
+          if (!poly.length) return s;
+          return s + ringAreaM2(poly[0]) - poly.slice(1).reduce((a, r) => a + ringAreaM2(r), 0);
+        }, 0);
+      }
+      if (geom.type === "GeometryCollection") {
+        return (geom.geometries || []).reduce((s, g) => s + geomAreaM2(g), 0);
+      }
+      return 0;
+    }
+    function extractHa(geo) {
+      if (!geo) return null;
+      const direct = readHaFromProps(geo.properties);
+      if (direct != null) return direct;
+      const feats = geo.type === "FeatureCollection" ? (geo.features || [])
+        : geo.type === "Feature" ? [geo] : [];
+      for (const f of feats) {
+        const v = readHaFromProps(f && f.properties);
+        if (v != null) return v;
+      }
+      let m2 = geomAreaM2(geo.geometry || (geo.type && geo.coordinates ? geo : null));
+      for (const f of feats) m2 += geomAreaM2(f.geometry);
+      if (m2 > 0) return Math.round((m2 / 10000) * 1000) / 1000;
+      return null;
+    }
+    function haAfterOf(id) {
+      const v = state.progress[id]?.haAfter;
+      const n = Number(v);
+      return Number.isFinite(n) ? n : null;
+    }
+    function haNow(r) {
+      const a = haAfterOf(r.id);
+      return a == null ? r.ha : a;
+    }
     function isDone(id) {
       return Boolean(state.progress[id]?.done);
+    }
+    function toRow(id, rec) {
+      const row = {
+        sh_id: id,
+        done: Boolean(rec?.done),
+        note: rec?.note || "",
+        done_at: rec?.done ? (rec.at || new Date().toISOString()) : null,
+        updated_at: new Date().toISOString()
+      };
+      if (rec?.haAfter != null && rec.haAfter !== "") row.ha_after = Number(rec.haAfter);
+      else row.ha_after = null;
+      return row;
+    }
+    function fromRow(row) {
+      const rec = {
+        done: Boolean(row.done),
+        note: row.note || "",
+        at: row.done_at || undefined
+      };
+      if (row.ha_after != null && row.ha_after !== "") rec.haAfter = Number(row.ha_after);
+      return rec;
+    }
+    function filesOf(id) {
+      const list = state.files[id] || [];
+      return {
+        geo: list.find((f) => f.kind === "geojson") || null,
+        photos: list.filter((f) => f.kind === "photo")
+      };
+    }
+    function fileUrl(path) {
+      if (!state.client || !path) return "";
+      return state.client.storage.from(BUCKET).getPublicUrl(path).data.publicUrl;
+    }
+    function addFileLocal(row) {
+      if (!state.files[row.sh_id]) state.files[row.sh_id] = [];
+      state.files[row.sh_id] = state.files[row.sh_id].filter((f) => f.id !== row.id);
+      if (row.kind === "geojson") {
+        state.files[row.sh_id] = state.files[row.sh_id].filter((f) => f.kind !== "geojson");
+      }
+      state.files[row.sh_id].push(row);
+    }
+    function removeFileLocal(id, fileId) {
+      state.files[id] = (state.files[id] || []).filter((f) => f.id !== fileId);
+    }
+    function safeName(name) {
+      return String(name || "file").replace(/[^a-zA-Z0-9._-]+/g, "_").slice(0, 80);
     }
 
     function collectors() {
@@ -680,8 +620,8 @@
         if (!map.has(r.colName)) map.set(r.colName, { name: r.colName, total: 0, done: 0, ha: 0, haDone: 0 });
         const c = map.get(r.colName);
         c.total += 1;
-        c.ha += r.ha;
-        if (isDone(r.id)) { c.done += 1; c.haDone += r.ha; }
+        c.ha += haNow(r);
+        if (isDone(r.id)) { c.done += 1; c.haDone += haNow(r); }
       }
       return [...map.values()].sort((a,b) => a.name.localeCompare(b.name, "id"));
     }
@@ -693,13 +633,7 @@
         if (state.status === "pending" && isDone(r.id)) return false;
         if (state.collector !== "all" && r.colName !== state.collector) return false;
         if (!q) return true;
-        return (
-          r.shName.toLowerCase().includes(q) ||
-          r.id.toLowerCase().includes(q) ||
-          r.cgId.toLowerCase().includes(q) ||
-          r.colName.toLowerCase().includes(q) ||
-          r.password.toLowerCase().includes(q)
-        );
+        return r.id.toLowerCase().includes(q);
       });
       const cmpName = (a,b) => a.shName.localeCompare(b.shName, "id", { sensitivity: "base" });
       if (state.sort === "name") rows.sort(cmpName);
@@ -712,8 +646,8 @@
     function renderStats() {
       const total = state.rows.length;
       const done = state.rows.filter(r => isDone(r.id)).length;
-      const haTotal = state.rows.reduce((s,r) => s + r.ha, 0);
-      const haDone = state.rows.filter(r => isDone(r.id)).reduce((s,r) => s + r.ha, 0);
+      const haTotal = state.rows.reduce((s,r) => s + haNow(r), 0);
+      const haDone = state.rows.filter(r => isDone(r.id)).reduce((s,r) => s + haNow(r), 0);
       const cols = collectors();
       const colsDone = cols.filter(c => c.done === c.total).length;
       const pct = total ? Math.round(done / total * 100) : 0;
@@ -728,10 +662,19 @@
     }
 
     function renderColPanel() {
-      $("colPanel").innerHTML = collectors().map(c => {
+      const allDone = state.rows.filter(r => isDone(r.id)).length;
+      const allPct = state.rows.length ? Math.round(allDone / state.rows.length * 100) : 0;
+      const items = [`<article class="col-card ${state.collector === "all" ? "active" : ""}" data-col="all">
+        <div class="row">
+          <strong style="font-size:.86rem">Semua collector</strong>
+          <span class="mono" style="font-size:.75rem;color:var(--muted)">${allDone}/${state.rows.length}</span>
+        </div>
+        <div class="bar"><i style="width:${allPct}%;background:var(--leaf)"></i></div>
+      </article>`];
+      $("colPanel").innerHTML = items.concat(collectors().map(c => {
         const pct = c.total ? Math.round(c.done / c.total * 100) : 0;
         const color = colorFor(c.name);
-        return `<article class="col-card">
+        return `<article class="col-card ${state.collector === c.name ? "active" : ""}" data-col="${esc(c.name)}">
           <div class="row">
             <strong style="font-size:.86rem">${esc(c.name)}</strong>
             <span class="mono" style="font-size:.75rem;color:var(--muted)">${c.done}/${c.total}</span>
@@ -741,24 +684,18 @@
             <span>${pct}%</span><span>${fmtHa(c.haDone)} / ${fmtHa(c.ha)} HA</span>
           </div>
         </article>`;
-      }).join("");
+      })).join("");
     }
 
     function renderChips() {
       const cols = collectors();
       const allDone = state.rows.filter(r => isDone(r.id)).length;
-      const items = [
-        `<button class="chip ${state.collector === "all" ? "active" : ""}" data-col="all">
-          Semua <span class="n">${allDone}/${state.rows.length}</span>
-        </button>`
-      ];
-      for (const c of cols) {
-        items.push(`<button class="chip ${state.collector === c.name ? "active" : ""}" data-col="${esc(c.name)}">
-          <span class="dot" style="background:${colorFor(c.name)}"></span>
-          ${esc(c.name)} <span class="n">${c.done}/${c.total}</span>
-        </button>`);
+      const sel = $("colFilter");
+      if (sel) {
+        sel.innerHTML = `<option value="all">Semua collector (${allDone}/${state.rows.length})</option>` +
+          cols.map(c => `<option value="${esc(c.name)}">${esc(c.name)} (${c.done}/${c.total})</option>`).join("");
+        sel.value = state.collector;
       }
-      $("collectorChips").innerHTML = items.join("");
     }
 
     function renderList() {
@@ -769,40 +706,60 @@
       $("list").innerHTML = rows.map(r => {
         const done = isDone(r.id);
         const note = state.progress[r.id]?.note || "";
-        const when = state.progress[r.id]?.at;
         const color = colorFor(r.colName);
-        return `<article class="card ${done ? "done" : ""}" data-id="${esc(r.id)}">
-          <div class="card-top">
-            <button class="check" data-act="toggle" aria-label="Tandai selesai">${done ? "✓" : ""}</button>
-            <div>
-              <div class="sh-name">${esc(r.shName)}</div>
-              <div class="meta">
-                <span class="mono"><b>${esc(r.id)}</b></span>
-                <span>CG ${esc(r.cgId)}</span>
-                ${when ? `<span>selesai ${new Date(when).toLocaleString("id-ID", { day:"2-digit", month:"short", hour:"2-digit", minute:"2-digit" })}</span>` : ""}
-              </div>
-              <div class="col-row">
-                <span class="avatar" style="background:${color}">${esc(initials(r.colName))}</span>
-                <span style="font-size:.8rem;color:var(--ink-soft)">${esc(r.colName)}</span>
-                <span class="stamp">SELESAI</span>
-              </div>
+        const pack = filesOf(r.id);
+        const geoUrl = pack.geo ? fileUrl(pack.geo.path) : "";
+        const open = state.openIds.has(r.id) ? "open" : "";
+        const thumbs = pack.photos.map((p) => {
+          const url = fileUrl(p.path);
+          return `<div class="thumb">
+            <img src="${esc(url)}" alt="${esc(p.name)}" data-act="view-pic" data-url="${esc(url)}" />
+            <button class="x" data-act="del-pic" data-fid="${esc(p.id)}" aria-label="Hapus foto">×</button>
+          </div>`;
+        }).join("");
+        return `<tr class="card ${done ? "done" : ""} ${open}" data-id="${esc(r.id)}">
+          <td><button class="check" data-act="toggle" aria-label="Tandai selesai">${done ? "✓" : ""}</button></td>
+          <td>
+            <div class="sh-name">${esc(r.shName)} <span class="stamp">SELESAI</span></div>
+            <div class="meta">CG ${esc(r.cgId)}</div>
+          </td>
+          <td class="mono">${esc(r.id)}</td>
+          <td>
+            <div class="col-cell">
+              <span class="avatar" style="background:${color}">${esc(initials(r.colName))}</span>
+              <span>${esc(r.colName)}</span>
             </div>
-            <div class="ha-pill">${fmtHa(r.ha)} HA</div>
-          </div>
-          <div class="actions">
-            <button class="btn" data-act="copy-id">Salin SH ID</button>
-            <button class="btn" data-act="copy-pass">Salin password</button>
-            <button class="btn" data-act="copy-both">Salin keduanya</button>
-            <button class="btn" data-act="expand">Detail</button>
-            <button class="btn ${done ? "ghost-done" : "primary"}" data-act="toggle">${done ? "Batalkan" : "Selesai"}</button>
-          </div>
-          <div class="pass-box">
+          </td>
+          <td><span class="ha-pill">${fmtHa(haNow(r))} HA</span>${haAfterOf(r.id) != null ? `<div class="meta">sebelum ${fmtHa(r.ha)}</div>` : ""}</td>
+          <td>
+            <div class="files">
+              ${pack.geo ? `<a class="file-chip" href="${esc(geoUrl)}" target="_blank" rel="noopener">GeoJSON</a>` : `<span class="file-chip miss">GeoJSON</span>`}
+              <span class="file-chip ${pack.photos.length ? "" : "miss"}">${pack.photos.length} foto</span>
+            </div>
+          </td>
+          <td>
+            <div class="actions">
+              <button class="btn" data-act="up-geo">GeoJSON</button>
+              <button class="btn" data-act="up-pic">Pict</button>
+              <button class="btn" data-act="copy-id">Salin ID</button>
+              <button class="btn" data-act="copy-pass">Password</button>
+              <button class="btn" data-act="expand">Detail</button>
+              <button class="btn ${done ? "ghost-done" : "primary"}" data-act="toggle">${done ? "Batal" : "Selesai"}</button>
+            </div>
+          </td>
+        </tr>
+        <tr class="detail-row" data-id="${esc(r.id)}">
+          <td colspan="7">
+            <div class="kv"><span>HA before</span><b>${fmtHa(r.ha)} HA</b><span></span></div>
+            <div class="kv"><span>HA after</span><b>${haAfterOf(r.id) != null ? fmtHa(haAfterOf(r.id)) + " HA" : "—"}</b><span></span></div>
             <div class="kv"><span>SH ID</span><b class="mono">${esc(r.id)}</b><button class="btn" data-act="copy-id">Salin</button></div>
             <div class="kv"><span>Password</span><b class="mono">${esc(r.password)}</b><button class="btn" data-act="copy-pass">Salin</button></div>
             <div class="kv"><span>CG ID</span><b class="mono">${esc(r.cgId)}</b><button class="btn" data-act="copy-cg">Salin</button></div>
+            ${pack.geo ? `<div class="kv"><span>GeoJSON</span><a class="file-chip" href="${esc(geoUrl)}" target="_blank" rel="noopener">${esc(pack.geo.name)}</a><button class="btn" data-act="del-geo" data-fid="${esc(pack.geo.id)}">Hapus</button></div>` : ""}
+            ${thumbs ? `<div class="thumbs">${thumbs}</div>` : ""}
             <input class="note-input" data-act="note" placeholder="Catatan (opsional)…" value="${esc(note)}" />
-          </div>
-        </article>`;
+          </td>
+        </tr>`;
       }).join("");
     }
 
@@ -813,7 +770,29 @@
       renderList();
     }
 
-    function setDone(id, done) {
+    async function upsertRows(recs) {
+      if (!state.client || !recs.length) return { ok: true };
+      setSync("busy", "Menyimpan…");
+      let { error } = await state.client.from("eudr_progress").upsert(recs, { onConflict: "sh_id" });
+      if (error && /ha_after/i.test(error.message || "")) {
+        const stripped = recs.map(({ ha_after, ...rest }) => rest);
+        ({ error } = await state.client.from("eudr_progress").upsert(stripped, { onConflict: "sh_id" }));
+      }
+      if (error) {
+        setSync("err", "Gagal simpan");
+        return { ok: false, error };
+      }
+      setSync("ok", "Tersimpan");
+      return { ok: true };
+    }
+
+    async function persistIds(ids) {
+      cacheProgress();
+      const recs = ids.map((id) => toRow(id, state.progress[id] || { done: false, note: "" }));
+      return upsertRows(recs);
+    }
+
+    async function setDone(id, done) {
       const prev = state.progress[id] || {};
       state.lastUndo = { id, prev: { ...prev } };
       if (done) state.progress[id] = { ...prev, done: true, at: new Date().toISOString() };
@@ -823,9 +802,9 @@
         if (!next.note) delete state.progress[id];
         else state.progress[id] = next;
       }
-      saveProgress();
       renderAll();
       toast(done ? "Ditandai selesai" : "Dibatalkan", true);
+      await persistIds([id]);
     }
 
     let toastTimer;
@@ -876,6 +855,246 @@
       toast("CSV progres diunduh");
     }
 
+    function fillCloudForm() {
+      const cfg = getConfig();
+      $("sbUrl").value = cfg.url;
+      $("sbKey").value = cfg.anonKey;
+      $("sqlBox").value = SETUP_SQL;
+      $("cloudErr").classList.remove("show");
+    }
+
+    function showCloudError(msg) {
+      const el = $("cloudErr");
+      el.textContent = msg;
+      el.classList.add("show");
+    }
+
+    function isMissingTable(error) {
+      const msg = (error?.message || "") + (error?.code || "");
+      return error?.code === "PGRST205" || /eudr_progress|schema cache/i.test(msg);
+    }
+
+    async function connectCloud(opts = {}) {
+      const cfg = getConfig();
+      if (!cfg.url || !cfg.anonKey) {
+        setSync("err", "Belum diisi");
+        if (opts.prompt !== false) $("cloudModal").showModal();
+        return false;
+      }
+      if (!window.supabase) {
+        setSync("err", "SDK gagal");
+        return false;
+      }
+      state.client = window.supabase.createClient(cfg.url, cfg.anonKey);
+      setSync("busy", "Menyambung…");
+      const { data, error } = await state.client.from("eudr_progress").select("*");
+      if (error) {
+        if (isMissingTable(error)) {
+          setSync("err", "Tabel belum ada");
+          if (opts.prompt !== false) {
+            fillCloudForm();
+            showCloudError("Tabel eudr_progress belum dibuat. Jalankan SQL di SQL Editor, lalu tes lagi.");
+            $("cloudModal").showModal();
+          }
+          return false;
+        }
+        setSync("err", "Gagal cloud");
+        if (opts.prompt !== false) {
+          fillCloudForm();
+          showCloudError(error.message || "Tidak bisa terhubung ke Supabase.");
+          $("cloudModal").showModal();
+        }
+        return false;
+      }
+
+      const remote = {};
+      for (const row of data || []) remote[row.sh_id] = fromRow(row);
+
+      const merged = { ...state.progress };
+      for (const [id, rec] of Object.entries(remote)) {
+        const local = merged[id];
+        if (!local) merged[id] = rec;
+        else if (rec.done && !local.done) merged[id] = rec;
+        else if (rec.done === local.done) {
+          merged[id] = {
+            done: rec.done,
+            note: local.note || rec.note,
+            at: rec.at || local.at,
+            haAfter: rec.haAfter != null ? rec.haAfter : local.haAfter
+          };
+        }
+      }
+      state.progress = merged;
+      cacheProgress();
+
+      const toPush = [];
+      for (const [id, rec] of Object.entries(merged)) {
+        if (!remote[id] && (rec.done || rec.note)) toPush.push(toRow(id, rec));
+      }
+      if (toPush.length) await upsertRows(toPush);
+
+      const filesRes = await state.client.from("eudr_files").select("*").order("created_at", { ascending: true });
+      if (filesRes.error) {
+        setSync("err", "Tabel file belum");
+        if (opts.prompt !== false) {
+          fillCloudForm();
+          showCloudError("Tabel/storage file belum siap. Jalankan SQL terbaru di SQL Editor, lalu tes lagi.");
+          $("cloudModal").showModal();
+        }
+        return false;
+      }
+      state.files = {};
+      for (const row of filesRes.data || []) addFileLocal(row);
+
+      setSync("ok", "Tersimpan");
+      listenRealtime();
+      return true;
+    }
+
+    async function uploadFile(shId, kind, file) {
+      if (!state.client) {
+        toast("Hubungkan Supabase dulu");
+        fillCloudForm();
+        $("cloudModal").showModal();
+        return;
+      }
+      const isGeo = kind === "geojson";
+      const max = isGeo ? 8 * 1024 * 1024 : 5 * 1024 * 1024;
+      if (file.size > max) {
+        toast(isGeo ? "GeoJSON maksimal 8 MB" : "Foto maksimal 5 MB");
+        return;
+      }
+      let parsedGeo = null;
+      let newHa = null;
+      if (isGeo) {
+        const okExt = /\.(geojson|json)$/i.test(file.name);
+        if (!okExt) { toast("Pilih file .geojson atau .json"); return; }
+        try {
+          const text = await file.text();
+          parsedGeo = JSON.parse(text);
+          if (!parsedGeo || !parsedGeo.type) { toast("GeoJSON tidak valid"); return; }
+          newHa = extractHa(parsedGeo);
+        } catch {
+          toast("GeoJSON tidak valid");
+          return;
+        }
+      } else {
+        const okType = /image\/(jpeg|jpg|png)/i.test(file.type) || /\.(jpe?g|png)$/i.test(file.name);
+        if (!okType) { toast("Foto hanya JPG atau PNG"); return; }
+      }
+
+      const name = safeName(file.name);
+      const path = isGeo
+        ? `${shId}/geojson/${name}`
+        : `${shId}/photos/${Date.now()}-${name}`;
+      const contentType = isGeo ? "application/geo+json" : (file.type || "image/jpeg");
+
+      setSync("busy", "Mengunggah…");
+      toast(isGeo ? "Mengunggah GeoJSON…" : "Mengunggah foto…");
+
+      if (isGeo) {
+        const old = filesOf(shId).geo;
+        if (old) {
+          await state.client.storage.from(BUCKET).remove([old.path]);
+          await state.client.from("eudr_files").delete().eq("id", old.id);
+          removeFileLocal(shId, old.id);
+        }
+      }
+
+      const { error: upErr } = await state.client.storage.from(BUCKET).upload(path, file, {
+        upsert: true,
+        contentType,
+        cacheControl: "3600"
+      });
+      if (upErr) {
+        setSync("err", "Gagal unggah");
+        toast(upErr.message || "Gagal unggah file");
+        fillCloudForm();
+        showCloudError("Gagal unggah. Pastikan SQL storage sudah di-Run. " + (upErr.message || ""));
+        $("cloudModal").showModal();
+        return;
+      }
+
+      const rec = { sh_id: shId, kind, path, name, size_bytes: file.size };
+      const { data, error } = await state.client.from("eudr_files").insert(rec).select("*").single();
+      if (error) {
+        setSync("err", "Gagal simpan file");
+        toast(error.message || "File terunggah, metadata gagal");
+        return;
+      }
+      addFileLocal(data);
+      if (isGeo) {
+        const prev = state.progress[shId] || {};
+        if (newHa != null) {
+          state.progress[shId] = { ...prev, haAfter: newHa };
+          await persistIds([shId]);
+          toast(`GeoJSON tersimpan · HA ${fmtHa(newHa)}`);
+        } else {
+          toast("GeoJSON tersimpan, nilai HA tidak ditemukan di file");
+        }
+      } else {
+        toast("Foto tersimpan");
+      }
+      setSync("ok", "Tersimpan");
+      renderAll();
+    }
+
+    async function deleteFile(shId, fileId) {
+      const rec = (state.files[shId] || []).find((f) => f.id === fileId);
+      if (!rec || !state.client) return;
+      if (!confirm(`Hapus ${rec.kind === "geojson" ? "GeoJSON" : "foto"} ini?`)) return;
+      setSync("busy", "Menghapus…");
+      await state.client.storage.from(BUCKET).remove([rec.path]);
+      const { error } = await state.client.from("eudr_files").delete().eq("id", fileId);
+      if (error) {
+        setSync("err", "Gagal hapus");
+        toast(error.message || "Gagal hapus file");
+        return;
+      }
+      removeFileLocal(shId, fileId);
+      if (rec.kind === "geojson") {
+        const prev = state.progress[shId] || {};
+        if (prev.haAfter != null) {
+          const next = { ...prev };
+          delete next.haAfter;
+          if (!next.done && !next.note) delete state.progress[shId];
+          else state.progress[shId] = next;
+          await persistIds([shId]);
+        }
+      }
+      setSync("ok", "Tersimpan");
+      renderAll();
+      toast("File dihapus");
+    }
+
+    function listenRealtime() {
+      if (!state.client) return;
+      state.client.channel("eudr-progress")
+        .on("postgres_changes", { event: "*", schema: "public", table: "eudr_progress" }, (payload) => {
+          state.applyingRemote = true;
+          if (payload.eventType === "DELETE") {
+            delete state.progress[payload.old.sh_id];
+          } else if (payload.new) {
+            state.progress[payload.new.sh_id] = fromRow(payload.new);
+            if (!state.progress[payload.new.sh_id].done && !state.progress[payload.new.sh_id].note) {
+              delete state.progress[payload.new.sh_id];
+            }
+          }
+          cacheProgress();
+          renderAll();
+          state.applyingRemote = false;
+        })
+        .on("postgres_changes", { event: "*", schema: "public", table: "eudr_files" }, (payload) => {
+          if (payload.eventType === "DELETE" && payload.old) {
+            removeFileLocal(payload.old.sh_id, payload.old.id);
+          } else if (payload.new) {
+            addFileLocal(payload.new);
+          }
+          renderAll();
+        })
+        .subscribe();
+    }
+
     function bind() {
       $("search").addEventListener("input", (e) => {
         state.query = e.target.value;
@@ -900,17 +1119,32 @@
         state.sort = e.target.value;
         renderList();
       });
+      $("colFilter").addEventListener("change", (e) => {
+        state.collector = e.target.value;
+        renderChips();
+        renderList();
+      });
       $("collectorChips").addEventListener("click", (e) => {
         const btn = e.target.closest("button[data-col]");
         if (!btn) return;
         state.collector = btn.dataset.col;
         renderChips();
+        renderColPanel();
+        renderList();
+      });
+      $("colPanel").addEventListener("click", (e) => {
+        const btn = e.target.closest("[data-col]");
+        if (!btn) return;
+        state.collector = btn.dataset.col;
+        renderChips();
+        renderColPanel();
         renderList();
       });
       $("list").addEventListener("click", (e) => {
-        const card = e.target.closest(".card");
-        if (!card) return;
-        const id = card.dataset.id;
+        const wrap = e.target.closest("[data-id]");
+        if (!wrap) return;
+        const id = wrap.dataset.id;
+        const card = $("list").querySelector(`tr.card[data-id="${id}"]`);
         const row = state.rows.find(r => r.id === id);
         const act = e.target.closest("[data-act]")?.dataset.act;
         if (!act) return;
@@ -919,18 +1153,58 @@
         if (act === "copy-pass") copyText(row.password, "Password");
         if (act === "copy-both") copyText(`${row.id}\t${row.password}`, "ID & password");
         if (act === "copy-cg") copyText(row.cgId, "CG ID");
-        if (act === "expand") card.classList.toggle("open");
+        if (act === "expand") {
+          card.classList.toggle("open");
+          if (card.classList.contains("open")) state.openIds.add(id);
+          else state.openIds.delete(id);
+        }
+        if (act === "up-geo") {
+          state.pendingUpload = { id, kind: "geojson" };
+          $("inputGeo").value = "";
+          $("inputGeo").click();
+        }
+        if (act === "up-pic") {
+          state.pendingUpload = { id, kind: "photo" };
+          $("inputPic").value = "";
+          $("inputPic").click();
+        }
+        if (act === "del-geo" || act === "del-pic") {
+          const fid = e.target.closest("[data-fid]")?.dataset.fid;
+          if (fid) deleteFile(id, fid);
+        }
+        if (act === "view-pic") {
+          const url = e.target.dataset.url;
+          $("picPreview").src = url;
+          $("picOpen").href = url;
+          $("picModal").showModal();
+        }
       });
+      $("inputGeo").addEventListener("change", (e) => {
+        const file = e.target.files && e.target.files[0];
+        const pending = state.pendingUpload;
+        e.target.value = "";
+        if (file && pending?.kind === "geojson") uploadFile(pending.id, "geojson", file);
+      });
+      $("inputPic").addEventListener("change", (e) => {
+        const file = e.target.files && e.target.files[0];
+        const pending = state.pendingUpload;
+        e.target.value = "";
+        if (file && pending?.kind === "photo") uploadFile(pending.id, "photo", file);
+      });
+      $("picClose").addEventListener("click", () => $("picModal").close());
+      let noteTimer;
       $("list").addEventListener("input", (e) => {
         if (e.target.dataset.act !== "note") return;
-        const id = e.target.closest(".card").dataset.id;
+        const id = e.target.closest("[data-id]").dataset.id;
         const prev = state.progress[id] || {};
         const note = e.target.value;
         if (!note && !prev.done) delete state.progress[id];
         else state.progress[id] = { ...prev, note };
-        saveProgress();
+        cacheProgress();
+        clearTimeout(noteTimer);
+        noteTimer = setTimeout(() => persistIds([id]), 450);
       });
-      $("fabDoneVisible").addEventListener("click", () => {
+      $("fabDoneVisible").addEventListener("click", async () => {
         const rows = filtered().filter(r => !isDone(r.id));
         if (!rows.length) return;
         if (!confirm(`Tandai ${rows.length} pekebun yang terlihat sebagai selesai?`)) return;
@@ -938,30 +1212,59 @@
         for (const r of rows) {
           state.progress[r.id] = { ...(state.progress[r.id] || {}), done: true, at: now };
         }
-        saveProgress();
         renderAll();
         toast(`${rows.length} ditandai selesai`);
+        await persistIds(rows.map(r => r.id));
       });
       $("btnHelp").addEventListener("click", () => $("helpModal").showModal());
       $("btnCloseHelp").addEventListener("click", () => $("helpModal").close());
       $("btnExport").addEventListener("click", exportCsv);
-      $("btnReset").addEventListener("click", () => {
-        if (!confirm("Hapus semua progres di perangkat ini?")) return;
+      $("btnCloud").addEventListener("click", () => {
+        fillCloudForm();
+        $("cloudModal").showModal();
+      });
+      $("syncPill").addEventListener("click", () => {
+        fillCloudForm();
+        $("cloudModal").showModal();
+      });
+      $("btnCloseCloud").addEventListener("click", () => $("cloudModal").close());
+      $("btnCopySql").addEventListener("click", () => copyText(SETUP_SQL, "SQL"));
+      $("btnTestCloud").addEventListener("click", async () => {
+        const cfg = { url: $("sbUrl").value.trim(), anonKey: $("sbKey").value.trim() };
+        if (!cfg.url || !cfg.anonKey) {
+          showCloudError("Isi Project URL dan key.");
+          return;
+        }
+        saveConfig(cfg);
+        const ok = await connectCloud({ prompt: false });
+        if (ok) {
+          $("cloudModal").close();
+          renderAll();
+          toast("Terhubung ke Supabase");
+        } else {
+          showCloudError("Belum terhubung. Pastikan SQL sudah di-Run, lalu tes lagi.");
+        }
+      });
+      $("btnReset").addEventListener("click", async () => {
+        if (!confirm("Hapus semua progres di cloud dan perangkat ini?")) return;
         state.progress = {};
-        saveProgress();
+        cacheProgress();
+        if (state.client) {
+          await state.client.from("eudr_progress").delete().neq("sh_id", "");
+        }
         $("helpModal").close();
         renderAll();
         toast("Progres direset");
       });
-      $("toast").addEventListener("click", (e) => {
+      $("toast").addEventListener("click", async (e) => {
         if (e.target.id !== "undoBtn" || !state.lastUndo) return;
         const { id, prev } = state.lastUndo;
         if (Object.keys(prev).length) state.progress[id] = prev;
         else delete state.progress[id];
         state.lastUndo = null;
-        saveProgress();
         renderAll();
         toast("Dibatalkan");
+        await persistIds([id]);
       });
       document.addEventListener("keydown", (e) => {
         if (e.key === "/" && document.activeElement !== $("search")) {
@@ -977,8 +1280,14 @@
       state.progress = loadProgress();
       bind();
       renderAll();
+      fillCloudForm();
+      await connectCloud({ prompt: true });
+      renderAll();
     }
     boot();
   </script>
+</body>
+</html>
+/script>
 </body>
 </html>
