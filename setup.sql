@@ -29,7 +29,7 @@ create policy "eudr_delete" on public.eudr_progress
 create table if not exists public.eudr_files (
   id uuid primary key default gen_random_uuid(),
   sh_id text not null,
-  kind text not null check (kind in ('geojson', 'photo')),
+  kind text not null check (kind in ('geojson', 'photo', 'tracy')),
   path text not null unique,
   name text not null,
   size_bytes bigint,
@@ -90,3 +90,8 @@ begin
   exception when duplicate_object then null;
   end;
 end $$;
+
+
+alter table public.eudr_files drop constraint if exists eudr_files_kind_check;
+alter table public.eudr_files add constraint eudr_files_kind_check
+  check (kind in ('geojson', 'photo', 'tracy'));
