@@ -423,7 +423,7 @@
           <button class="icon-btn" id="btnReport" title="Report">
             <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h7l4 4v12H6z"/><path d="M13 3v4h4M8 11h7M8 15h7"/></svg>
           </button>
-          <button class="icon-btn" id="btnExport" title="Unduh progres">
+          <button class="icon-btn" id="btnExport" title="Unduh Excel (CSV)">
             <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 3v9M5 8l4 4 4-4M4 14h10"/></svg>
           </button>
           <button class="icon-btn" id="btnHelp" title="Bantuan">
@@ -556,6 +556,7 @@
       <p class="geo-meta" id="geoMeta"></p>
       <div id="geoBody"></div>
       <div class="modal-actions">
+        <button class="btn" id="geoCopyLink">Salin link</button>
         <button class="btn" id="geoDownload">Download</button>
         <button class="btn primary" id="geoClose">Tutup</button>
       </div>
@@ -1014,7 +1015,7 @@ create policy "eudr_obj_delete" on storage.objects for delete to anon, authentic
             <div class="kv"><span>SH ID</span><b class="mono">${esc(r.id)}</b><button class="btn" data-act="copy-id">Salin</button></div>
             <div class="kv"><span>Password</span><b class="mono">${esc(r.password)}</b><button class="btn" data-act="copy-pass">Salin</button></div>
             <div class="kv"><span>CG ID</span><b class="mono">${esc(r.cgId)}</b><button class="btn" data-act="copy-cg">Salin</button></div>
-            ${pack.geo ? `<div class="kv"><span>GeoJSON</span><button class="file-chip" data-act="view-geo" type="button">${esc(pack.geo.name)}</button><button class="btn" data-act="del-geo" data-fid="${esc(pack.geo.id)}">Hapus</button></div>` : ""}
+            ${pack.geo ? `<div class="kv"><span>GeoJSON</span><button class="file-chip" data-act="view-geo" type="button">${esc(pack.geo.name)}</button><button class="btn" data-act="copy-geo-link">Salin link</button><button class="btn" data-act="del-geo" data-fid="${esc(pack.geo.id)}">Hapus</button></div>` : ""}
             ${pack.tracy ? `<div class="kv"><span>Tracy</span><b>OK</b><button class="btn" data-act="del-pic" data-fid="${esc(pack.tracy.id)}">Hapus Tracy</button></div>
             <div class="thumbs"><div class="thumb">
               <img src="${esc(fileUrl(pack.tracy.path))}" alt="Tracy" data-act="view-pic" data-url="${esc(fileUrl(pack.tracy.path))}" />
@@ -1112,25 +1113,32 @@ create policy "eudr_obj_delete" on storage.objects for delete to anon, authentic
     }
 
     function exportCsv() {
-      const header = ["CG ID","Collector","SH ID","Password","SH Name","HA","Status","Selesai pada","Catatan"];
-      const lines = [header.join(",")];
+      // Pemisah ";" supaya langsung rapi saat dibuka di Excel Indonesia
+      const q = (v) => `"${String(v ?? "").replace(/"/g, '""')}"`;
+      const header = ["CG ID","Collector","SH ID","Password","SH Name","HA before","HA after","Status","Selesai pada","Link GeoJSON","Link Tracy","Catatan"];
+      const lines = [header.join(";")];
       for (const r of state.rows) {
         const p = state.progress[r.id] || {};
+        const pack = filesOf(r.id);
+        const geoUrl = pack.geo && state.client ? fileUrl(pack.geo.path) : "";
+        const tracyUrl = pack.tracy && state.client ? fileUrl(pack.tracy.path) : "";
+        const haAfter = haAfterOf(r.id);
         const cells = [
           r.cgId, r.colName, r.id, r.password, r.shName, r.ha,
+          haAfter != null ? haAfter : "",
           p.done ? "Selesai" : "Belum",
           p.at ? new Date(p.at).toLocaleString("id-ID") : "",
-          p.note || ""
-        ].map(v => `"${String(v).replace(/"/g, '""')}"`);
-        lines.push(cells.join(","));
+          geoUrl, tracyUrl, p.note || ""
+        ].map(q);
+        lines.push(cells.join(";"));
       }
-      const blob = new Blob([lines.join("\n")], { type: "text/csv;charset=utf-8" });
+      const blob = new Blob(["\ufeff" + lines.join("\n")], { type: "text/csv;charset=utf-8" });
       const a = document.createElement("a");
       a.href = URL.createObjectURL(blob);
-      a.download = `eudr-issue-${new Date().toISOString().slice(0,10)}.csv`;
+      a.download = `eudr-sh-${new Date().toISOString().slice(0,10)}.csv`;
       a.click();
-      URL.revokeObjectURL(a.href);
-      toast("CSV progres diunduh");
+      setTimeout(() => URL.revokeObjectURL(a.href), 3000);
+      toast("File Excel (CSV) diunduh, termasuk link GeoJSON");
     }
 
     function fillCloudForm() {
@@ -1438,7 +1446,7 @@ create policy "eudr_obj_delete" on storage.objects for delete to anon, authentic
         geoFile = null;
         return;
       }
-      geoFile = { name: pack.geo.name, blob: data };
+      geoFile = { name: pack.geo.name, blob: data, url: fileUrl(pack.geo.path) };
       let geo;
       try { geo = JSON.parse(await data.text()); }
       catch { $("geoMeta").textContent = "Isi GeoJSON tidak valid"; return; }
@@ -1862,6 +1870,11 @@ create policy "eudr_obj_delete" on storage.objects for delete to anon, authentic
           $("picOpen").href = url;
           $("picModal").showModal();
         }
+        if (act === "copy-geo-link") {
+          const g = filesOf(id).geo;
+          if (g && state.client) copyText(fileUrl(g.path), "Link GeoJSON");
+          else toast("GeoJSON belum ada");
+        }
         if (act === "view-geo") openGeoDetail(id);
       });
       $("inputGeo").addEventListener("change", (e) => {
@@ -1923,6 +1936,10 @@ create policy "eudr_obj_delete" on storage.objects for delete to anon, authentic
       window.addEventListener("pointercancel", () => { crop.drag = null; });
       $("picClose").addEventListener("click", () => $("picModal").close());
       $("geoClose").addEventListener("click", () => $("geoModal").close());
+      $("geoCopyLink").addEventListener("click", () => {
+        if (geoFile && geoFile.url) copyText(geoFile.url, "Link GeoJSON");
+        else toast("Link belum siap");
+      });
       $("geoDownload").addEventListener("click", () => {
         if (!geoFile || !geoFile.blob) { toast("File belum termuat"); return; }
         const url = URL.createObjectURL(geoFile.blob);
