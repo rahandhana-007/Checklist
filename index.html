@@ -556,6 +556,7 @@
       <p class="geo-meta" id="geoMeta"></p>
       <div id="geoBody"></div>
       <div class="modal-actions">
+        <button class="btn" id="geoDownload">Download</button>
         <button class="btn primary" id="geoClose">Tutup</button>
       </div>
     </div>
@@ -1434,8 +1435,10 @@ create policy "eudr_obj_delete" on storage.objects for delete to anon, authentic
       const { data, error } = await state.client.storage.from(BUCKET).download(pack.geo.path);
       if (error || !data) {
         $("geoMeta").textContent = error?.message || "Gagal membaca GeoJSON";
+        geoFile = null;
         return;
       }
+      geoFile = { name: pack.geo.name, blob: data };
       let geo;
       try { geo = JSON.parse(await data.text()); }
       catch { $("geoMeta").textContent = "Isi GeoJSON tidak valid"; return; }
@@ -1488,6 +1491,8 @@ create policy "eudr_obj_delete" on storage.objects for delete to anon, authentic
           </table>
         </div>`;
     }
+
+    let geoFile = null; // blob GeoJSON yang sedang tampil di modal
 
     const crop = {
       shId: null,
@@ -1918,6 +1923,18 @@ create policy "eudr_obj_delete" on storage.objects for delete to anon, authentic
       window.addEventListener("pointercancel", () => { crop.drag = null; });
       $("picClose").addEventListener("click", () => $("picModal").close());
       $("geoClose").addEventListener("click", () => $("geoModal").close());
+      $("geoDownload").addEventListener("click", () => {
+        if (!geoFile || !geoFile.blob) { toast("File belum termuat"); return; }
+        const url = URL.createObjectURL(geoFile.blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = geoFile.name || "geojson.geojson";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 3000);
+        toast("GeoJSON diunduh");
+      });
       $("geoModal").addEventListener("click", (e) => {
         const btn = e.target.closest("[data-copy]");
         if (!btn) return;
