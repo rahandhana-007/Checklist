@@ -118,13 +118,14 @@
       gap: 10px;
       align-items: center;
     }
-    .search-wrap { position: relative; flex: 1; min-width: 220px; }
+    .search-group { display: flex; flex-wrap: wrap; gap: 8px; flex: 1; }
+    .search-wrap { position: relative; flex: 1; min-width: 200px; }
     .search-wrap svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); }
-    #search {
+    #search, #searchName {
       width: 100%; height: 40px; border: 1px solid var(--line); background: #fafbf8;
       border-radius: 10px; padding: 0 36px 0 38px; font-size: 0.9rem; outline: none;
     }
-    #search:focus { border-color: var(--leaf); }
+    #search:focus, #searchName:focus { border-color: var(--leaf); }
     .search-clear { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); width: 24px; height: 24px; color: var(--muted); display: none; }
     .search-clear.show { display: grid; place-items: center; }
     .filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
@@ -457,10 +458,17 @@
     </header>
 
     <div class="toolbar">
-      <div class="search-wrap">
-        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="8" cy="8" r="5.5"/><path d="M12.2 12.2 16 16"/></svg>
-        <input id="search" type="search" placeholder="Cari SH ID…" autocomplete="off" inputmode="search" />
-        <button class="search-clear" id="clearSearch" aria-label="Hapus pencarian">✕</button>
+      <div class="search-group">
+        <div class="search-wrap">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="8" cy="8" r="5.5"/><path d="M12.2 12.2 16 16"/></svg>
+          <input id="search" type="search" placeholder="Cari SH ID…" autocomplete="off" inputmode="search" />
+          <button class="search-clear" id="clearSearch" aria-label="Hapus pencarian SH ID">✕</button>
+        </div>
+        <div class="search-wrap">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="8" cy="8" r="5.5"/><path d="M12.2 12.2 16 16"/></svg>
+          <input id="searchName" type="search" placeholder="Cari nama pekebun…" autocomplete="off" inputmode="search" />
+          <button class="search-clear" id="clearNameSearch" aria-label="Hapus pencarian nama">✕</button>
+        </div>
       </div>
       <div class="filters">
         <div class="seg" id="statusSeg">
@@ -621,7 +629,7 @@
       <h2>Cara pakai EUDR Farmer Data Management</h2>
       <ul>
         <li>Ketuk kotak centang untuk menandai pekebun sudah selesai.</li>
-        <li>Pencarian hanya memakai SH ID.</li>
+        <li>Pencarian bisa lewat SH ID atau nama pekebun.</li>
         <li>Salin ID / password sekali ketuk.</li>
         <li>Import pekebun baru lewat tombol Import: upload Excel/CSV, tempel link Google Sheets, atau tempel data.</li>
         <li>Progres disimpan ke Supabase, jadi tetap ada di Vercel dan perangkat lain.</li>
@@ -721,6 +729,7 @@ create policy "eudr_obj_delete" on storage.objects for delete to anon, authentic
       openIds: new Set(),
       pendingUpload: null,
       query: "",
+      nameQuery: "",
       status: "all",
       collector: "all",
       sort: "collector",
@@ -951,12 +960,14 @@ create policy "eudr_obj_delete" on storage.objects for delete to anon, authentic
 
     function filtered() {
       const q = state.query.trim().toLowerCase();
+      const nq = state.nameQuery.trim().toLowerCase();
       let rows = state.rows.filter(r => {
         if (state.status === "done" && !isDone(r.id)) return false;
         if (state.status === "pending" && isDone(r.id)) return false;
         if (state.collector !== "all" && r.colName !== state.collector) return false;
-        if (!q) return true;
-        return r.id.toLowerCase().includes(q);
+        if (q && !r.id.toLowerCase().includes(q)) return false;
+        if (nq && !r.shName.toLowerCase().includes(nq)) return false;
+        return true;
       });
       const cmpName = (a,b) => a.shName.localeCompare(b.shName, "id", { sensitivity: "base" });
       if (state.sort === "name") rows.sort(cmpName);
@@ -2028,6 +2039,18 @@ create policy "eudr_obj_delete" on storage.objects for delete to anon, authentic
         $("search").focus();
         renderList();
       });
+      $("searchName").addEventListener("input", (e) => {
+        state.nameQuery = e.target.value;
+        $("clearNameSearch").classList.toggle("show", Boolean(state.nameQuery));
+        renderList();
+      });
+      $("clearNameSearch").addEventListener("click", () => {
+        state.nameQuery = "";
+        $("searchName").value = "";
+        $("clearNameSearch").classList.remove("show");
+        $("searchName").focus();
+        renderList();
+      });
       $("statusSeg").addEventListener("click", (e) => {
         const btn = e.target.closest("button[data-status]");
         if (!btn) return;
@@ -2327,9 +2350,11 @@ create policy "eudr_obj_delete" on storage.objects for delete to anon, authentic
         await persistIds([id]);
       });
       document.addEventListener("keydown", (e) => {
-        if (e.key === "/" && document.activeElement !== $("search")) {
+        if (e.key === "/") {
           e.preventDefault();
-          $("search").focus();
+          const active = document.activeElement;
+          if (active === $("search")) $("searchName").focus();
+          else if (active !== $("searchName")) $("search").focus();
         }
       });
     }
