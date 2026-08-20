@@ -186,6 +186,8 @@
     .btn.ghost-done { background: #e7f3e4; color: var(--leaf); border-color: #c9ddc4; }
     .btn.tracy-ok { background: #2d7a46; color: #fff; border-color: #2d7a46; }
     .btn.tracy-no { background: #c44b2b; color: #fff; border-color: #c44b2b; }
+    .btn.alih-on { background: #fdeccf; color: #b45309; border-color: #f3c983; }
+    .meta.alih-tag { color: #b45309; font-weight: 600; }
     .file-chip {
       display: inline-flex; align-items: center; height: 24px; padding: 0 8px;
       border-radius: 6px; font-size: 0.7rem; font-weight: 700; text-decoration: none;
@@ -477,11 +479,17 @@
           <button data-status="done">Selesai</button>
         </div>
         <select class="filter-select" id="colFilter"></select>
+        <select class="filter-select" id="geoFilter">
+          <option value="all">Semua file</option>
+          <option value="has">Sudah GeoJSON</option>
+          <option value="none">Belum GeoJSON</option>
+        </select>
         <select class="filter-select" id="sortBy">
           <option value="collector" selected>Collector</option>
           <option value="name">Nama A–Z</option>
           <option value="ha">HA terbesar</option>
           <option value="pending">Belum dulu</option>
+          <option value="geodate">GeoJSON terbaru</option>
         </select>
         <span class="count-chip" id="resultCount">254 data</span>
       </div>
@@ -631,6 +639,7 @@
         <li>Ketuk kotak centang untuk menandai pekebun sudah selesai.</li>
         <li>Pencarian bisa lewat SH ID atau nama pekebun.</li>
         <li>Salin ID / password sekali ketuk.</li>
+        <li>Pengecualian <b>Alih fungsi</b>: centang di baris SH maka otomatis selesai tanpa perlu unggah file.</li>
         <li>Import pekebun baru lewat tombol Import: upload Excel/CSV, tempel link Google Sheets, atau tempel data.</li>
         <li>Progres disimpan ke Supabase, jadi tetap ada di Vercel dan perangkat lain.</li>
       </ul>
@@ -679,6 +688,7 @@
   updated_at timestamptz not null default now()
 );
 alter table public.eudr_progress add column if not exists ha_after numeric;
+alter table public.eudr_progress add column if not exists alih_fungsi boolean not null default false;
 alter table public.eudr_progress enable row level security;
 drop policy if exists "eudr_select" on public.eudr_progress;
 drop policy if exists "eudr_insert" on public.eudr_progress;
@@ -732,6 +742,7 @@ create policy "eudr_obj_delete" on storage.objects for delete to anon, authentic
       nameQuery: "",
       status: "all",
       collector: "all",
+      geoFilter: "all",
       sort: "collector",
       lastUndo: null,
       client: null,
@@ -783,6 +794,12 @@ create policy "eudr_obj_delete" on storage.objects for delete to anon, authentic
     }
     function fmtHa(n) {
       return Number(n).toLocaleString("id-ID", { minimumFractionDigits: 2, maximumFractionDigits: 3 });
+    }
+    function fmtWhen(iso) {
+      if (!iso) return "—";
+      const d = new Date(iso);
+      if (Number.isNaN(d.getTime())) return "—";
+      return d.toLocaleString("id-ID", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
     }
     function readHaFromProps(props) {
       if (!props || typeof props !== "object") return null;
@@ -855,7 +872,7 @@ create policy "eudr_obj_delete" on storage.objects for delete to anon, authentic
       return a == null ? r.ha : a;
     }
     function isEmptyProgress(rec) {
-      return !rec || (!rec.done && !rec.note && rec.haAfter == null);
+      return !rec || (!rec.done && !rec.note && rec.haAfter == null && !rec.alihFungsi);
     }
     function applyProgress(id, rec) {
       if (isEmptyProgress(rec)) delete state.progress[id];
@@ -866,7 +883,7 @@ create policy "eudr_obj_delete" on storage.objects for delete to anon, authentic
       return Boolean(f.geo && f.tracy && f.photos.length);
     }
     function isDone(id) {
-      return isComplete(id);
+      return isComplete(id) || Boolean(state.progress[id]?.alihFungsi);
     }
     function missingItems(id) {
       const f = filesOf(id);
@@ -877,8 +894,16 @@ create policy "eudr_obj_delete" on storage.objects for delete to anon, authentic
       return miss;
     }
     async function syncAutoDone(id) {
-      const complete = isComplete(id);
       const prev = state.progress[id] || {};
+      if (prev.alihFungsi) {
+        if (!prev.done) {
+          state.progress[id] = { ...prev, done: true, at: prev.at || new Date().toISOString() };
+          cacheProgress();
+          await persistIds([id]);
+        }
+        return;
+      }
+      const complete = isComplete(id);
       if (complete && !prev.done) {
         state.progress[id] = { ...prev, done: true, at: new Date().toISOString() };
         cacheProgress();
@@ -892,12 +917,34 @@ create policy "eudr_obj_delete" on storage.objects for delete to anon, authentic
         await persistIds([id]);
       }
     }
+    async function toggleAlih(id) {
+      const prev = state.progress[id] || {};
+      const cur = Boolean(prev.alihFungsi);
+      if (!cur) {
+        state.progress[id] = { ...prev, alihFungsi: true, done: true, at: new Date().toISOString() };
+        cacheProgress();
+        await persistIds([id]);
+        toast("Alih fungsi dicentang · otomatis selesai");
+      } else {
+        const next = { ...prev, alihFungsi: false };
+        const complete = isComplete(id);
+        next.done = complete;
+        if (!complete) delete next.at;
+        else if (!next.at) next.at = new Date().toISOString();
+        applyProgress(id, next);
+        cacheProgress();
+        await persistIds([id]);
+        toast(complete ? "Alih fungsi dilepas · file lengkap, tetap selesai" : "Alih fungsi dilepas");
+      }
+      renderAll();
+    }
     function toRow(id, rec) {
       const row = {
         sh_id: id,
         done: Boolean(rec?.done),
         note: rec?.note || "",
         done_at: rec?.done ? (rec.at || new Date().toISOString()) : null,
+        alih_fungsi: Boolean(rec?.alihFungsi),
         updated_at: new Date().toISOString()
       };
       if (rec?.haAfter != null && rec.haAfter !== "") row.ha_after = Number(rec.haAfter);
@@ -911,6 +958,7 @@ create policy "eudr_obj_delete" on storage.objects for delete to anon, authentic
         at: row.done_at || undefined
       };
       if (row.ha_after != null && row.ha_after !== "") rec.haAfter = Number(row.ha_after);
+      if (row.alih_fungsi) rec.alihFungsi = true;
       return rec;
     }
     function isTracyFile(f) {
@@ -967,6 +1015,11 @@ create policy "eudr_obj_delete" on storage.objects for delete to anon, authentic
         if (state.collector !== "all" && r.colName !== state.collector) return false;
         if (q && !r.id.toLowerCase().includes(q)) return false;
         if (nq && !r.shName.toLowerCase().includes(nq)) return false;
+        if (state.geoFilter !== "all") {
+          const hasGeo = Boolean(filesOf(r.id).geo);
+          if (state.geoFilter === "has" && !hasGeo) return false;
+          if (state.geoFilter === "none" && hasGeo) return false;
+        }
         return true;
       });
       const cmpName = (a,b) => a.shName.localeCompare(b.shName, "id", { sensitivity: "base" });
@@ -974,6 +1027,10 @@ create policy "eudr_obj_delete" on storage.objects for delete to anon, authentic
       if (state.sort === "ha") rows.sort((a,b) => b.ha - a.ha || cmpName(a,b));
       if (state.sort === "collector") rows.sort((a,b) => a.colName.localeCompare(b.colName, "id") || cmpName(a,b));
       if (state.sort === "pending") rows.sort((a,b) => Number(isDone(a.id)) - Number(isDone(b.id)) || cmpName(a,b));
+      if (state.sort === "geodate") {
+        const geoTime = (r) => { const g = filesOf(r.id).geo; return g?.created_at ? new Date(g.created_at).getTime() : -1; };
+        rows.sort((a,b) => geoTime(b) - geoTime(a) || cmpName(a,b));
+      }
       return rows;
     }
 
@@ -1030,6 +1087,7 @@ create policy "eudr_obj_delete" on storage.objects for delete to anon, authentic
       $("fabDoneVisible").classList.remove("show");
       $("list").innerHTML = rows.map(r => {
         const done = isDone(r.id);
+        const alih = Boolean(state.progress[r.id]?.alihFungsi);
         const note = state.progress[r.id]?.note || "";
         const color = colorFor(r.colName);
         const pack = filesOf(r.id);
@@ -1038,7 +1096,7 @@ create policy "eudr_obj_delete" on storage.objects for delete to anon, authentic
         const thumbs = pack.photos.map((p) => {
           const url = fileUrl(p.path);
           return `<div class="thumb">
-            <img src="${esc(url)}" alt="${esc(p.name)}" data-act="view-pic" data-url="${esc(url)}" />
+            <img src="${esc(url)}" alt="${esc(p.name)}" title="Diunggah ${fmtWhen(p.created_at)}" data-act="view-pic" data-url="${esc(url)}" />
             <button class="x" data-act="del-pic" data-fid="${esc(p.id)}" aria-label="Hapus foto">×</button>
           </div>`;
         }).join("");
@@ -1053,6 +1111,7 @@ create policy "eudr_obj_delete" on storage.objects for delete to anon, authentic
           <td>
             <div class="sh-name">${esc(r.shName)}<span class="ig-check" title="Selesai"></span> <span class="stamp">Selesai</span></div>
             <div class="meta">CG ${esc(r.cgId)}</div>
+            ${alih ? `<div class="meta alih-tag">Alih fungsi ✓</div>` : ""}
           </td>
           <td class="mono">${esc(r.id)}</td>
           <td><span class="ha-pill">${fmtHa(haNow(r))} HA</span>${haAfterOf(r.id) != null ? `<div class="meta">sebelum ${fmtHa(r.ha)}</div>` : ""}</td>
@@ -1061,12 +1120,14 @@ create policy "eudr_obj_delete" on storage.objects for delete to anon, authentic
               ${pack.geo ? `<button class="file-chip" data-act="view-geo" type="button">GeoJSON</button>` : `<span class="file-chip miss">GeoJSON</span>`}
               <span class="file-chip ${pack.photos.length ? "" : "miss"}">${pack.photos.length} foto</span>
             </div>
+            ${pack.geo ? `<div class="meta">unggah ${fmtWhen(pack.geo.created_at)}</div>` : ""}
           </td>
           <td>
             <div class="actions">
               <button class="btn" data-act="up-geo">GeoJSON</button>
               <button class="btn" data-act="up-pic">Pict</button>
               <button class="btn ${pack.tracy ? "tracy-ok" : "tracy-no"}" data-act="up-tracy">${pack.tracy ? "Tracy OK" : "Tracy Not OK"}</button>
+              <button class="btn ${alih ? "alih-on" : ""}" data-act="alih" title="Selesai otomatis tanpa unggah file (alih fungsi)">${alih ? "Alih fungsi ✓" : "Alih fungsi"}</button>
               <button class="btn" data-act="copy-pass">Password</button>
               <button class="btn" data-act="expand">Detail</button>
               <button class="btn ${done ? "ghost-done" : ""}" data-act="toggle">${done ? "Selesai" : "Lengkapi"}</button>
@@ -1080,13 +1141,14 @@ create policy "eudr_obj_delete" on storage.objects for delete to anon, authentic
             <div class="kv"><span>SH ID</span><b class="mono">${esc(r.id)}</b><button class="btn" data-act="copy-id">Salin</button></div>
             <div class="kv"><span>Password</span><b class="mono">${esc(r.password)}</b><button class="btn" data-act="copy-pass">Salin</button></div>
             <div class="kv"><span>CG ID</span><b class="mono">${esc(r.cgId)}</b><button class="btn" data-act="copy-cg">Salin</button></div>
-            ${pack.geo ? `<div class="kv"><span>GeoJSON</span><button class="file-chip" data-act="view-geo" type="button">${esc(pack.geo.name)}</button><button class="btn" data-act="copy-geo-link">Salin link</button><button class="btn" data-act="del-geo" data-fid="${esc(pack.geo.id)}">Hapus</button></div>` : ""}
-            ${pack.tracy ? `<div class="kv"><span>Tracy</span><b>OK</b><button class="btn" data-act="del-pic" data-fid="${esc(pack.tracy.id)}">Hapus Tracy</button></div>
+            <div class="kv"><span>Alih fungsi</span><b>${alih ? "Ya · selesai tanpa unggah file" : "Tidak"}</b><button class="btn ${alih ? "alih-on" : ""}" data-act="alih">${alih ? "Lepas centang" : "Centang"}</button></div>
+            ${pack.geo ? `<div class="kv"><span>GeoJSON</span><button class="file-chip" data-act="view-geo" type="button">${esc(pack.geo.name)}</button><button class="btn" data-act="copy-geo-link">Salin link</button><button class="btn" data-act="del-geo" data-fid="${esc(pack.geo.id)}">Hapus</button></div><div class="kv"><span>GeoJSON diunggah</span><b>${fmtWhen(pack.geo.created_at)}</b><span></span></div>` : ""}
+            ${pack.tracy ? `<div class="kv"><span>Tracy</span><b>OK · ${fmtWhen(pack.tracy.created_at)}</b><button class="btn" data-act="del-pic" data-fid="${esc(pack.tracy.id)}">Hapus Tracy</button></div>
             <div class="thumbs"><div class="thumb">
               <img src="${esc(fileUrl(pack.tracy.path))}" alt="Tracy" data-act="view-pic" data-url="${esc(fileUrl(pack.tracy.path))}" />
               <button class="x" data-act="del-pic" data-fid="${esc(pack.tracy.id)}" aria-label="Hapus Tracy">×</button>
             </div></div>` : `<div class="kv"><span>Tracy</span><b>Not OK</b><span></span></div>`}
-            ${thumbs ? `<div class="thumbs">${thumbs}</div>` : ""}
+            ${thumbs ? `<div class="thumbs">${thumbs}</div><div class="kv"><span>Pict terbaru</span><b>${fmtWhen(pack.photos.reduce((a, p) => (!a || p.created_at > a ? p.created_at : a), ""))}</b><span></span></div>` : ""}
             <input class="note-input" data-act="note" placeholder="Catatan (opsional)…" value="${esc(note)}" />
           </td>
         </tr>`;
@@ -1104,8 +1166,8 @@ create policy "eudr_obj_delete" on storage.objects for delete to anon, authentic
       if (!state.client || !recs.length) return { ok: true };
       setSync("busy", "Menyimpan…");
       let { error } = await state.client.from("eudr_progress").upsert(recs, { onConflict: "sh_id" });
-      if (error && /ha_after/i.test(error.message || "")) {
-        const stripped = recs.map(({ ha_after, ...rest }) => rest);
+      if (error && /ha_after|alih_fungsi/i.test(error.message || "")) {
+        const stripped = recs.map(({ ha_after, alih_fungsi, ...rest }) => rest);
         ({ error } = await state.client.from("eudr_progress").upsert(stripped, { onConflict: "sh_id" }));
       }
       if (error) {
@@ -1180,7 +1242,7 @@ create policy "eudr_obj_delete" on storage.objects for delete to anon, authentic
     function exportCsv() {
       // Pemisah ";" supaya langsung rapi saat dibuka di Excel Indonesia
       const q = (v) => `"${String(v ?? "").replace(/"/g, '""')}"`;
-      const header = ["CG ID","Collector","SH ID","Password","SH Name","HA before","HA after","Status","Selesai pada","Link GeoJSON","Link Tracy","Catatan"];
+      const header = ["CG ID","Collector","SH ID","Password","SH Name","HA before","HA after","Status","Alih fungsi","Selesai pada","Link GeoJSON","Link Tracy","Catatan"];
       const lines = [header.join(";")];
       for (const r of state.rows) {
         const p = state.progress[r.id] || {};
@@ -1192,6 +1254,7 @@ create policy "eudr_obj_delete" on storage.objects for delete to anon, authentic
           r.cgId, r.colName, r.id, r.password, r.shName, r.ha,
           haAfter != null ? haAfter : "",
           p.done ? "Selesai" : "Belum",
+          p.alihFungsi ? "Ya" : "",
           p.at ? new Date(p.at).toLocaleString("id-ID") : "",
           geoUrl, tracyUrl, p.note || ""
         ].map(q);
@@ -1731,7 +1794,7 @@ create policy "eudr_obj_delete" on storage.objects for delete to anon, authentic
         </td>
       </tr>` : "";
 
-      $("geoMeta").textContent = `${pack.geo.name} · ${[...types].join(", ") || geo.type || "GeoJSON"} · ${pts.length} titik`;
+      $("geoMeta").textContent = `${pack.geo.name} · ${[...types].join(", ") || geo.type || "GeoJSON"} · ${pts.length} titik · diunggah ${fmtWhen(pack.geo.created_at)}`;
       $("geoBody").innerHTML = `
         <div class="kv"><span>SH ID</span><b class="mono">${esc(id)}</b><span></span></div>
         <div class="kv"><span>HA before</span><b>${row ? fmtHa(row.ha) + " HA" : "—"}</b><span></span></div>
@@ -2067,6 +2130,10 @@ create policy "eudr_obj_delete" on storage.objects for delete to anon, authentic
         renderChips();
         renderList();
       });
+      $("geoFilter").addEventListener("change", (e) => {
+        state.geoFilter = e.target.value;
+        renderList();
+      });
       $("collectorChips").addEventListener("click", (e) => {
         const btn = e.target.closest("button[data-col]");
         if (!btn) return;
@@ -2092,10 +2159,14 @@ create policy "eudr_obj_delete" on storage.objects for delete to anon, authentic
         const act = e.target.closest("[data-act]")?.dataset.act;
         if (!act) return;
         if (act === "toggle") {
-          const miss = missingItems(id);
-          if (miss.length) toast("Belum lengkap: " + miss.join(", "));
-          else toast("Sudah selesai");
+          if (state.progress[id]?.alihFungsi) toast("Selesai (alih fungsi) · tanpa perlu file");
+          else {
+            const miss = missingItems(id);
+            if (miss.length) toast("Belum lengkap: " + miss.join(", "));
+            else toast("Sudah selesai");
+          }
         }
+        if (act === "alih") toggleAlih(id);
         if (act === "copy-id") copyText(row.id, "SH ID");
         if (act === "copy-pass") copyText(row.password, "Password");
         if (act === "copy-both") copyText(`${row.id}\t${row.password}`, "ID & password");

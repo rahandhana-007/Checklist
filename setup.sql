@@ -9,6 +9,7 @@ create table if not exists public.eudr_progress (
 );
 
 alter table public.eudr_progress add column if not exists ha_after numeric;
+alter table public.eudr_progress add column if not exists alih_fungsi boolean not null default false;
 
 alter table public.eudr_progress enable row level security;
 

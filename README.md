@@ -10,6 +10,8 @@ Aplikasi pelacak pekebun. Progres **selesai** disimpan di Supabase, jadi tetap a
 
 Setelah itu setiap SH bisa **Upload GeoJSON** dan **Upload Pict** (JPG/PNG). File masuk Supabase Storage.
 
+Pengecualian **Alih fungsi**: centang tombol *Alih fungsi* di baris SH, maka otomatis selesai tanpa perlu unggah file (tersimpan di kolom `alih_fungsi`).
+
 ## Deploy ke Vercel
 
 Upload folder ini (`index.html`, `data.json`, `config.js`, `logo.png`).  
