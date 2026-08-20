@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <script src="./config.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.8/dist/umd/supabase.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <style>
     :root {
       --ink: #1c241e;
@@ -236,6 +237,17 @@
     .hint { background: #eef5d4; color: #355016; border-radius: 10px; padding: 10px 12px; font-size: 0.8rem; margin: 10px 0; }
     .errbox { background: #fde8e4; color: #8a2b16; border-radius: 10px; padding: 10px 12px; font-size: 0.8rem; margin: 10px 0; display: none; }
     .errbox.show { display: block; }
+    .row2 { display: flex; gap: 8px; }
+    .row2 input { flex: 1; }
+    .imp-summary { font-size: 0.82rem; margin: 10px 0 6px; }
+    .imp-summary b.g { color: #2d7a46; }
+    .imp-summary b.r { color: #b3541e; }
+    .imp-scroll { max-height: 220px; overflow: auto; border: 1px solid var(--line); border-radius: 10px; }
+    .imp-table { width: 100%; border-collapse: collapse; font-size: 0.76rem; }
+    .imp-table th, .imp-table td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+    .imp-table th { color: var(--muted); font-weight: 600; position: sticky; top: 0; background: var(--bg); }
+    .imp-table td.dup { color: #b3541e; }
+    .imp-table td.new { color: #2d7a46; }
     .fab-row { position: fixed; right: 20px; bottom: 20px; z-index: 30; }
     .fab {
       height: 42px; padding: 0 14px; border-radius: 999px; background: var(--forest); color: #fff;
@@ -423,6 +435,9 @@
           <button class="icon-btn" id="btnReport" title="Report">
             <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h7l4 4v12H6z"/><path d="M13 3v4h4M8 11h7M8 15h7"/></svg>
           </button>
+          <button class="icon-btn" id="btnImport" title="Import dari Excel">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 2v8M5.5 6.5 9 10l3.5-3.5"/><path d="M3 11v5a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-5"/></svg>
+          </button>
           <button class="icon-btn" id="btnExport" title="Unduh Excel (CSV)">
             <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 3v9M5 8l4 4 4-4M4 14h10"/></svg>
           </button>
@@ -563,6 +578,44 @@
     </div>
   </dialog>
 
+  <dialog class="modal" id="importModal">
+    <div class="modal-body">
+      <h2>Import pekebun dari Excel</h2>
+      <div class="hint">
+        Pilih salah satu: upload file <b>.xlsx / .csv</b>, tempel <b>link Google Sheets</b>, atau tempel data CSV.
+        Kolom yang dikenali: <b>CG ID, CG Name, SH ID, Password, SH Name, HA</b>.
+        SH ID yang sudah ada akan dilewati (atau diperbarui kalau dicentang).
+      </div>
+      <div class="field">
+        <label>1. File Excel / CSV</label>
+        <input type="file" id="importFile" accept=".xlsx,.xls,.csv,.txt" />
+      </div>
+      <div class="field">
+        <label>2. Link Google Sheets</label>
+        <div class="row2">
+          <input id="importLink" placeholder="https://docs.google.com/spreadsheets/d/…" />
+          <button class="btn" id="btnFetchLink" type="button">Ambil</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>3. Tempel data CSV</label>
+        <textarea id="importPaste" class="sql-box" style="min-height:70px" placeholder="CG ID;CG Name;SH ID;Password;SH Name;HA&#10;AB00000001-1;Dedi;XX00012345;1234-Ab1;Tukimin;0.02"></textarea>
+        <button class="btn" id="btnParsePaste" type="button">Lanjut</button>
+      </div>
+      <div class="errbox" id="importMsg"></div>
+      <div id="importPreview"></div>
+      <div class="modal-actions">
+        <label style="display:flex;align-items:center;gap:6px;font-size:.8rem;color:var(--soft)">
+          <input type="checkbox" id="importUpdateDup" /> Perbarui data duplikat
+        </label>
+        <span style="flex:1"></span>
+        <button class="btn" id="btnClearImport" type="button">Hapus data import</button>
+        <button class="btn" id="btnImportClose" type="button">Tutup</button>
+        <button class="btn primary" id="btnDoImport" type="button" disabled>Import</button>
+      </div>
+    </div>
+  </dialog>
+
   <dialog class="modal" id="helpModal">
     <div class="modal-body">
       <h2>Cara pakai EUDR Farmer Data Management</h2>
@@ -570,6 +623,7 @@
         <li>Ketuk kotak centang untuk menandai pekebun sudah selesai.</li>
         <li>Pencarian hanya memakai SH ID.</li>
         <li>Salin ID / password sekali ketuk.</li>
+        <li>Import pekebun baru lewat tombol Import: upload Excel/CSV, tempel link Google Sheets, atau tempel data.</li>
         <li>Progres disimpan ke Supabase, jadi tetap ada di Vercel dan perangkat lain.</li>
       </ul>
       <div class="modal-actions">
@@ -1139,6 +1193,189 @@ create policy "eudr_obj_delete" on storage.objects for delete to anon, authentic
       a.click();
       setTimeout(() => URL.revokeObjectURL(a.href), 3000);
       toast("File Excel (CSV) diunduh, termasuk link GeoJSON");
+    }
+
+    // ===== Import pekebun dari Excel / CSV / Google Sheets =====
+    const IMPORT_KEY = "eudr_imported_v1";
+    const pendingImport = { rows: [], bad: 0, updateDup: false };
+
+    function loadImported() {
+      try {
+        const v = JSON.parse(localStorage.getItem(IMPORT_KEY) || "[]");
+        return Array.isArray(v) ? v : [];
+      } catch { return []; }
+    }
+    function saveImported(list) {
+      try { localStorage.setItem(IMPORT_KEY, JSON.stringify(list)); } catch {}
+    }
+
+    function splitLine(line, delim) {
+      const out = []; let cur = ""; let inQ = false;
+      for (let i = 0; i < line.length; i++) {
+        const ch = line[i];
+        if (inQ) {
+          if (ch === '"') {
+            if (line[i + 1] === '"') { cur += '"'; i++; }
+            else inQ = false;
+          } else cur += ch;
+        } else {
+          if (ch === '"') inQ = true;
+          else if (ch === delim) { out.push(cur); cur = ""; }
+          else cur += ch;
+        }
+      }
+      out.push(cur);
+      return out;
+    }
+
+    function parseDelimited(text) {
+      const t = String(text || "").replace(/^\uFEFF/, "").replace(/\r\n?/g, "\n");
+      const lines = t.split("\n").map((l) => l.trim()).filter((l) => l.length);
+      if (!lines.length) return { header: [], rows: [] };
+      const sample = lines.slice(0, 5).join("\n");
+      const delim = (sample.match(/;/g) || []).length >= (sample.match(/,/g) || []).length ? ";" : ",";
+      const header = splitLine(lines[0], delim).map((h) => h.trim().toLowerCase());
+      const rows = lines.slice(1).map((l) => splitLine(l, delim));
+      return { header, rows };
+    }
+
+    function mapSheet(header, rows) {
+      const COLMAP = [
+        ["id", ["sh id", "shid", "sh-id"]],
+        ["cgId", ["cg id", "cgid", "cg-id"]],
+        ["colName", ["cg name", "col name", "collector", "nama cg", "nama collector", "nama kolektor"]],
+        ["password", ["password", "pass"]],
+        ["shName", ["sh name", "nama", "nama pekebun", "nama petani", "pekebun", "petani"]],
+        ["ha", ["ha", "luas"]]
+      ];
+      const idx = {};
+      for (const [key, keys] of COLMAP) {
+        for (const k of keys) {
+          const i = header.findIndex((h) => h === k || h.startsWith(k + " ") || h.startsWith(k + "("));
+          if (i >= 0) { idx[key] = i; break; }
+        }
+      }
+      if (idx.id == null) return { rows: [], bad: 0, needId: true };
+      const out = [];
+      const seen = new Set();
+      let bad = 0;
+      for (const cells of rows) {
+        if (!cells.some((c) => String(c ?? "").trim() !== "")) continue;
+        const get = (k) => (idx[k] != null && cells[idx[k]] != null) ? String(cells[idx[k]]).trim() : "";
+        const id = get("id").toUpperCase();
+        if (!id) { bad++; continue; }
+        if (seen.has(id)) { bad++; continue; }
+        seen.add(id);
+        const haRaw = get("ha").replace(/[^\d.,-]/g, "").replace(",", ".");
+        const ha = haRaw === "" ? null : parseFloat(haRaw);
+        out.push({
+          id,
+          cgId: get("cgId"),
+          colName: get("colName"),
+          password: get("password"),
+          shName: get("shName"),
+          ha: Number.isFinite(ha) ? ha : null
+        });
+      }
+      return { rows: out, bad, needId: false };
+    }
+
+    function sheetExportUrl(input) {
+      const m = String(input || "").match(/spreadsheets\/d\/([a-zA-Z0-9_-]+)/);
+      if (!m) return null;
+      return `https://docs.google.com/spreadsheets/d/${m[1]}/export?format=csv`;
+    }
+
+    function setImportStatus(msg, isErr) {
+      const el = $("importMsg");
+      el.textContent = msg || "";
+      el.classList.toggle("show", !!msg);
+      el.style.background = isErr ? "#fde8e4" : "";
+    }
+
+    function renderImportPreview() {
+      const rows = pendingImport.rows;
+      const box = $("importPreview");
+      const btn = $("btnDoImport");
+      if (!rows.length) {
+        box.innerHTML = "";
+        btn.disabled = true;
+        btn.textContent = "Import";
+        return;
+      }
+      const existing = new Set(state.rows.map((r) => r.id));
+      let nNew = 0, nDup = 0;
+      const trs = rows.map((r) => {
+        const isDup = existing.has(r.id);
+        if (isDup) nDup++; else nNew++;
+        return `<tr><td class="mono">${esc(r.id)}</td><td>${esc(r.shName)}</td><td>${esc(r.colName)}</td><td class="mono">${r.ha != null ? fmtHa(r.ha) : "\u2014"}</td><td class="${isDup ? "dup" : "new"}">${isDup ? "Duplikat" : "Baru"}</td></tr>`;
+      }).join("");
+      box.innerHTML = `
+        <div class="imp-summary">
+          <b class="g">${nNew} baru</b>${nDup ? ` \u00b7 <b class="r">${nDup} duplikat${pendingImport.updateDup ? " (akan diperbarui)" : " (dilewati)"}</b>` : ""}${pendingImport.bad ? ` \u00b7 ${pendingImport.bad} baris rusak dilewati` : ""}
+        </div>
+        <div class="imp-scroll"><table class="imp-table">
+          <thead><tr><th>SH ID</th><th>Nama</th><th>Collector</th><th>HA</th><th></th></tr></thead>
+          <tbody>${trs}</tbody>
+        </table></div>`;
+      btn.disabled = false;
+      btn.textContent = pendingImport.updateDup && nDup ? `Import ${nNew} + perbarui ${nDup}` : `Import ${nNew}`;
+    }
+
+    function applyParsed(header, rows) {
+      const res = mapSheet(header, rows);
+      if (res.needId) {
+        setImportStatus("Kolom 'SH ID' tidak ditemukan. Pastikan header: CG ID, CG Name, SH ID, Password, SH Name, HA.", true);
+        return;
+      }
+      pendingImport.rows = res.rows;
+      pendingImport.bad = res.bad;
+      renderImportPreview();
+      setImportStatus(`Terbaca ${res.rows.length} baris${res.bad ? `, ${res.bad} baris rusak dilewati` : ""}`);
+    }
+
+    function applyImport() {
+      const { rows, updateDup } = pendingImport;
+      if (!rows.length) return;
+      const map = new Map(state.rows.map((r) => [r.id, r]));
+      const storeMap = new Map(loadImported().map((r) => [r.id, r]));
+      let added = 0, updated = 0, skipped = 0;
+      for (const row of rows) {
+        const cur = map.get(row.id);
+        if (cur) {
+          if (updateDup) {
+            Object.assign(cur, row);
+            storeMap.set(row.id, { ...(storeMap.get(row.id) || {}), ...row });
+            updated++;
+          } else skipped++;
+        } else {
+          map.set(row.id, row);
+          storeMap.set(row.id, row);
+          added++;
+        }
+      }
+      saveImported([...storeMap.values()]);
+      state.rows = [...map.values()];
+      pendingImport.rows = [];
+      pendingImport.bad = 0;
+      $("importFile").value = "";
+      $("importLink").value = "";
+      $("importPaste").value = "";
+      renderImportPreview();
+      setImportStatus("");
+      renderAll();
+      $("importModal").close();
+      toast(`Import selesai: ${added} baru${updated ? `, ${updated} diperbarui` : ""}${skipped ? `, ${skipped} dilewati` : ""}`);
+    }
+
+    async function clearImported() {
+      if (!loadImported().length) { toast("Tidak ada data import tersimpan"); return; }
+      if (!confirm("Hapus semua pekebun hasil import dari perangkat ini? (data di data.json tetap aman)")) return;
+      localStorage.removeItem(IMPORT_KEY);
+      const res = await fetch("./data.json");
+      state.rows = await res.json();
+      renderAll();
+      toast("Data import dihapus");
     }
 
     function fillCloudForm() {
@@ -1983,6 +2220,64 @@ create policy "eudr_obj_delete" on storage.objects for delete to anon, authentic
       $("btnHelp").addEventListener("click", () => $("helpModal").showModal());
       $("btnCloseHelp").addEventListener("click", () => $("helpModal").close());
       $("btnExport").addEventListener("click", exportCsv);
+      $("btnImport").addEventListener("click", () => {
+        renderImportPreview();
+        setImportStatus("");
+        $("importModal").showModal();
+      });
+      $("btnImportClose").addEventListener("click", () => $("importModal").close());
+      $("btnFetchLink").addEventListener("click", async () => {
+        const url = sheetExportUrl($("importLink").value);
+        if (!url) { setImportStatus("Link bukan Google Sheets. Gunakan link yang ada '/spreadsheets/d/…'", true); return; }
+        setImportStatus("Mengambil data dari Google Sheets…");
+        try {
+          const res = await fetch(url);
+          if (!res.ok) throw new Error("HTTP " + res.status);
+          const text = await res.text();
+          const p = parseDelimited(text);
+          applyParsed(p.header, p.rows);
+        } catch (err) {
+          setImportStatus("Gagal ambil link: " + (err?.message || err) + ". Coba unduh sebagai CSV lalu upload filenya.", true);
+        }
+      });
+      $("btnParsePaste").addEventListener("click", () => {
+        const text = $("importPaste").value.trim();
+        if (!text) { setImportStatus("Tempel dulu datanya", true); return; }
+        const p = parseDelimited(text);
+        applyParsed(p.header, p.rows);
+      });
+      $("importFile").addEventListener("change", async (e) => {
+        const file = e.target.files && e.target.files[0];
+        e.target.value = "";
+        if (!file) return;
+        const name = file.name.toLowerCase();
+        setImportStatus("Membaca file…");
+        try {
+          if (name.endsWith(".csv") || name.endsWith(".txt")) {
+            const p = parseDelimited(await file.text());
+            applyParsed(p.header, p.rows);
+          } else if (name.endsWith(".xlsx") || name.endsWith(".xls")) {
+            if (!window.XLSX) throw new Error("Library Excel belum termuat (perlu internet)");
+            const buf = await file.arrayBuffer();
+            const wb = XLSX.read(new Uint8Array(buf), { type: "array" });
+            const ws = wb.Sheets[wb.SheetNames[0]];
+            const aoa = XLSX.utils.sheet_to_json(ws, { header: 1, raw: true, defval: "" });
+            const header = (aoa[0] || []).map((h) => String(h ?? "").trim().toLowerCase());
+            const rows = aoa.slice(1);
+            applyParsed(header, rows);
+          } else {
+            setImportStatus("Format tidak didukung. Gunakan .xlsx, .csv, atau .txt", true);
+          }
+        } catch (err) {
+          setImportStatus("Gagal baca file: " + (err?.message || err), true);
+        }
+      });
+      $("importUpdateDup").addEventListener("change", () => {
+        pendingImport.updateDup = $("importUpdateDup").checked;
+        renderImportPreview();
+      });
+      $("btnDoImport").addEventListener("click", applyImport);
+      $("btnClearImport").addEventListener("click", clearImported);
       $("btnReport").addEventListener("click", () => {
         if ($("reportView").classList.contains("show")) closeReport();
         else openReport();
@@ -2042,6 +2337,12 @@ create policy "eudr_obj_delete" on storage.objects for delete to anon, authentic
     async function boot() {
       const res = await fetch("./data.json");
       state.rows = await res.json();
+      const imported = loadImported();
+      if (imported.length) {
+        const map = new Map(state.rows.map((r) => [r.id, r]));
+        for (const r of imported) if (r && r.id) map.set(r.id, r);
+        state.rows = [...map.values()];
+      }
       state.progress = loadProgress();
       bind();
       renderAll();
