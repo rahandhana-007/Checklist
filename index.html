@@ -1165,16 +1165,25 @@ create policy "eudr_obj_delete" on storage.objects for delete to anon, authentic
     async function upsertRows(recs) {
       if (!state.client || !recs.length) return { ok: true };
       setSync("busy", "Menyimpan…");
-      let { error } = await state.client.from("eudr_progress").upsert(recs, { onConflict: "sh_id" });
-      if (error && /ha_after|alih_fungsi/i.test(error.message || "")) {
-        const stripped = recs.map(({ ha_after, alih_fungsi, ...rest }) => rest);
-        ({ error } = await state.client.from("eudr_progress").upsert(stripped, { onConflict: "sh_id" }));
+      let rows = recs;
+      let { error } = await state.client.from("eudr_progress").upsert(rows, { onConflict: "sh_id" });
+      let warned = "";
+      if (error && /alih_fungsi/i.test(error.message || "")) {
+        rows = rows.map(({ alih_fungsi, ...rest }) => rest);
+        ({ error } = await state.client.from("eudr_progress").upsert(rows, { onConflict: "sh_id" }));
+        warned = "Kolom alih_fungsi belum ada di Supabase — centang alih fungsi tersimpan lokal saja. Jalankan SQL terbaru.";
+      }
+      if (error && /ha_after/i.test(error.message || "")) {
+        rows = rows.map(({ ha_after, ...rest }) => rest);
+        ({ error } = await state.client.from("eudr_progress").upsert(rows, { onConflict: "sh_id" }));
+        if (!warned) warned = "Kolom ha_after belum ada di Supabase — HA after tersimpan lokal saja. Jalankan SQL terbaru.";
       }
       if (error) {
         setSync("err", "Gagal simpan");
         return { ok: false, error };
       }
       setSync("ok", "Tersimpan");
+      if (warned) toast(warned);
       return { ok: true };
     }
 
@@ -1517,7 +1526,8 @@ create policy "eudr_obj_delete" on storage.objects for delete to anon, authentic
             done: rec.done,
             note: local.note || rec.note,
             at: rec.at || local.at,
-            haAfter: rec.haAfter != null ? rec.haAfter : local.haAfter
+            haAfter: rec.haAfter != null ? rec.haAfter : local.haAfter,
+            alihFungsi: Boolean(rec.alihFungsi || local.alihFungsi)
           };
         }
       }
@@ -1526,7 +1536,7 @@ create policy "eudr_obj_delete" on storage.objects for delete to anon, authentic
 
       const toPush = [];
       for (const [id, rec] of Object.entries(merged)) {
-        if (!remote[id] && (rec.done || rec.note || rec.haAfter != null)) toPush.push(toRow(id, rec));
+        if (!remote[id] && (rec.done || rec.note || rec.haAfter != null || rec.alihFungsi)) toPush.push(toRow(id, rec));
       }
       if (toPush.length) await upsertRows(toPush);
 
